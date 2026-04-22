@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food on Trains — Weekly Journey Tracker</title>
+<style>
+  :root { color-scheme: light; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #1a1a2e; padding: 20px 24px 32px; min-height: 100vh; }
+
+  .header { margin-bottom: 20px; }
+  .header h1 { font-size: 18px; font-weight: 700; color: #1a1a2e; display: flex; align-items: center; gap: 8px; }
+  .header .meta { margin-top: 6px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .week-pill { display: inline-flex; align-items: center; gap: 5px; background: #e9ecef; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #495057; }
+  .updated-pill { font-size: 12px; color: #868e96; }
+
+  .brand-section { background: white; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 18px; overflow: hidden; }
+  .brand-header { padding: 12px 18px; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; letter-spacing: 0.3px; }
+  .brand-header.ixigo { background: linear-gradient(90deg, #e8f4fd, #f0f8ff); color: #0055a5; border-left: 4px solid #0055a5; }
+  .brand-header.ctkt { background: linear-gradient(90deg, #fff3e0, #fff8f0); color: #c84b00; border-left: 4px solid #e65100; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th { background: #f8f9fa; padding: 9px 14px; text-align: left; font-weight: 600; color: #6c757d; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e9ecef; white-space: nowrap; }
+  th.r { text-align: right; }
+  td { padding: 10px 14px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfc; }
+
+  .jname { font-weight: 600; color: #212529; font-size: 12.5px; }
+  .jlogic { font-size: 11px; color: #adb5bd; margin-top: 2px; line-height: 1.4; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+  .hi { color: #dc3545; } .md { color: #fd7e14; } .lo { color: #198754; } .cv { color: #0d6efd; }
+  .na { color: #adb5bd; font-weight: 400; font-size: 11px; text-align: right; }
+  .footer { text-align: center; font-size: 11px; color: #ced4da; margin-top: 16px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🍱 Food on Trains — Weekly Journey Tracker</h1>
+  <div class="meta">
+    <span class="week-pill">📅 Apr 15 – Apr 21, 2026</span>
+    <span class="updated-pill">Last updated: <strong>Wed Apr 22, 2026</strong></span>
+  </div>
+</div>
+
+<div class="brand-section">
+  <div class="brand-header ixigo">🚂 Ixigo Trains App &nbsp;<span style="font-size:11px;font-weight:400;color:#5b9bd5;">447-577-Z44Z</span></div>
+  <table>
+    <thead><tr><th style="width:34%">Journey</th><th class="r">Entered</th><th class="r">Timed Out</th><th class="r">Timeout %</th><th class="r">Goal Met</th><th class="r">Conv. %</th></tr></thead>
+    <tbody>
+      <tr><td><div class="jname">Train - Food Journey</div><div class="jlogic">PNs proportional to days left for DOJ</div></td><td class="num">76,124</td><td class="num hi">123,258</td><td class="num hi">161.9%</td><td class="num">1,638</td><td class="num cv">2.15%</td></tr>
+      <tr><td><div class="jname">Food Ordering Dropoff - V2</div><div class="jlogic">Order page viewed but food not clicked</div></td><td class="num">192,677</td><td class="num lo">0</td><td class="num lo">0.0%</td><td class="num">5,412</td><td class="num cv">2.81%</td></tr>
+      <tr><td><div class="jname">Food Order before DOJ v2</div><div class="jlogic">Users with a train in the next 1 day</div></td><td class="num">166,961</td><td class="num hi">160,914</td><td class="num hi">96.4%</td><td class="num">1,736</td><td class="num cv">1.04%</td></tr>
+      <tr><td><div class="jname">Food on Trains - Timing Experiment - 1</div><div class="jlogic">Running status check → serviceable Zoop/Swiggy station</div></td><td class="num">692,593</td><td class="num hi">656,053</td><td class="num hi">94.7%</td><td class="num">3,348</td><td class="num cv">0.48%</td></tr>
+      <tr><td><div class="jname">Food Survey - Jan'26</div><div class="jlogic">Users who enter funnel but decide not to book</div></td><td class="num">296,374</td><td class="num lo">15</td><td class="num lo">0.0%</td><td class="na">N/A</td><td class="na">N/A</td></tr>
+      <tr><td><div class="jname">Running Status Checked but not Order Food v3</div><div class="jlogic">Checked running status, yet to order food</div></td><td class="num">28,227</td><td class="num hi">23,561</td><td class="num hi">83.5%</td><td class="num">171</td><td class="num cv">0.61%</td></tr>
+      <tr><td><div class="jname">PNR Checked but not Order Food v2</div><div class="jlogic">PNR status check, didn't order food next day</div></td><td class="num">16,440</td><td class="num hi">16,328</td><td class="num hi">99.3%</td><td class="num">32</td><td class="num cv">0.19%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="brand-section">
+  <div class="brand-header ctkt">🎫 ConfirmTkt App &nbsp;<span style="font-size:11px;font-weight:400;color:#d4845a;">R74-58Z-8Z7Z</span></div>
+  <table>
+    <thead><tr><th style="width:34%">Journey</th><th class="r">Entered</th><th class="r">Timed Out</th><th class="r">Timeout %</th><th class="r">Goal Met</th><th class="r">Conv. %</th></tr></thead>
+    <tbody>
+      <tr><td><div class="jname">Food Journey - Timing Experiment</div><div class="jlogic">Running status check → serviceable Zoop/Swiggy station</div></td><td class="num">583</td><td class="num hi">553</td><td class="num hi">94.9%</td><td class="num">0</td><td class="num cv">0.0%</td></tr>
+      <tr><td><div class="jname">Food Journey - Trains</div><div class="jlogic">PNs proportional to days left for DOJ</div></td><td class="num">144,216</td><td class="num hi">251,786</td><td class="num hi">174.6%</td><td class="num">2,634</td><td class="num cv">1.83%</td></tr>
+      <tr><td><div class="jname">Food Survey - Jan'26</div><div class="jlogic">Users who enter funnel but decide not to book</div></td><td class="num">124,648</td><td class="num lo">3</td><td class="num lo">0.0%</td><td class="na">N/A</td><td class="na">N/A</td></tr>
+      <tr><td><div class="jname">Running status Checked But No order food v3</div><div class="jlogic">Checked running status, didn't order food</div></td><td class="num">4,495</td><td class="num hi">3,898</td><td class="num hi">86.7%</td><td class="num">50</td><td class="num cv">1.11%</td></tr>
+      <tr><td><div class="jname">Food Ordering Dropoff - V1</div><div class="jlogic">Order page viewed but food not clicked</div></td><td class="num">100,496</td><td class="num hi">108,208</td><td class="num hi">107.7%</td><td class="num">4,930</td><td class="num cv">4.91%</td></tr>
+      <tr><td><div class="jname">Post Train Book Food Order | 29 Apr 2025</div><div class="jlogic">User has booked a train but not food</div></td><td class="num">216,283</td><td class="num hi">217,640</td><td class="num hi">100.6%</td><td class="num">504</td><td class="num cv">0.23%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">Auto-updated every Wednesday at 3 PM · Source: CleverTap Journey Stats · Last 7 days</div>
+</body>
+</html>
