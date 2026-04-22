@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Food Journey Weekly Tracker",
+  "schemaVersion": 1,
+  "description": "Weekly tracker for all Food on Trains journeys across Ixigo Trains and ConfirmTkt, populated every Monday by a scheduled task from CleverTap Journey Stats."
+}
+</script>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,15 +17,33 @@
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #1a1a2e; padding: 20px 24px 32px; min-height: 100vh; }
 
   .header { margin-bottom: 20px; }
-  .header h1 { font-size: 18px; font-weight: 700; color: #1a1a2e; display: flex; align-items: center; gap: 8px; }
-  .header .meta { margin-top: 6px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .week-pill { display: inline-flex; align-items: center; gap: 5px; background: #e9ecef; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #495057; }
-  .updated-pill { font-size: 12px; color: #868e96; }
+  .header h1 { font-size: 18px; font-weight: 700; color: #1a1a2e; }
+  .controls { margin-top: 10px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+  .week-select-wrap { display: flex; align-items: center; gap: 8px; }
+  .week-select-wrap label { font-size: 12px; font-weight: 600; color: #6c757d; }
+  select#weekPicker {
+    background: white; border: 1px solid #dee2e6; border-radius: 8px;
+    padding: 5px 10px; font-size: 13px; font-weight: 600; color: #212529;
+    cursor: pointer; outline: none;
+  }
+  select#weekPicker:focus { border-color: #0055a5; }
+
+  .nav-btns { display: flex; gap: 4px; }
+  .nav-btn {
+    background: white; border: 1px solid #dee2e6; border-radius: 6px;
+    padding: 4px 10px; font-size: 13px; cursor: pointer; color: #495057;
+    transition: all 0.15s;
+  }
+  .nav-btn:hover:not(:disabled) { background: #e9ecef; }
+  .nav-btn:disabled { opacity: 0.35; cursor: default; }
+
+  .updated-pill { font-size: 12px; color: #adb5bd; margin-left: auto; }
 
   .brand-section { background: white; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 18px; overflow: hidden; }
-  .brand-header { padding: 12px 18px; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; letter-spacing: 0.3px; }
-  .brand-header.ixigo { background: linear-gradient(90deg, #e8f4fd, #f0f8ff); color: #0055a5; border-left: 4px solid #0055a5; }
-  .brand-header.ctkt { background: linear-gradient(90deg, #fff3e0, #fff8f0); color: #c84b00; border-left: 4px solid #e65100; }
+  .brand-header { padding: 12px 18px; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+  .brand-header.ixigo { background: linear-gradient(90deg,#e8f4fd,#f0f8ff); color: #0055a5; border-left: 4px solid #0055a5; }
+  .brand-header.ctkt  { background: linear-gradient(90deg,#fff3e0,#fff8f0); color: #c84b00; border-left: 4px solid #e65100; }
 
   table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
   th { background: #f8f9fa; padding: 9px 14px; text-align: left; font-weight: 600; color: #6c757d; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e9ecef; white-space: nowrap; }
@@ -27,20 +52,31 @@
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: #fafbfc; }
 
-  .jname { font-weight: 600; color: #212529; font-size: 12.5px; }
+  .jname  { font-weight: 600; color: #212529; font-size: 12.5px; }
   .jlogic { font-size: 11px; color: #adb5bd; margin-top: 2px; line-height: 1.4; }
   .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
-  .hi { color: #dc3545; } .md { color: #fd7e14; } .lo { color: #198754; } .cv { color: #0d6efd; }
-  .na { color: #adb5bd; font-weight: 400; font-size: 11px; text-align: right; }
+  .hi { color: #dc3545; } .md { color: #fd7e14; } .lo { color: #198754; }
+  .cv { color: #0d6efd; } .na { color: #adb5bd; font-weight: 400; font-size: 11px; text-align: right; }
+
   .footer { text-align: center; font-size: 11px; color: #ced4da; margin-top: 16px; }
+  .dot { width:7px;height:7px;border-radius:50%;display:inline-block;background:#22c55e;margin-right:4px;animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
 </style>
 </head>
 <body>
+
 <div class="header">
   <h1>🍱 Food on Trains — Weekly Journey Tracker</h1>
-  <div class="meta">
-    <span class="week-pill">📅 Apr 15 – Apr 21, 2026</span>
-    <span class="updated-pill">Last updated: <strong>Wed Apr 22, 2026</strong></span>
+  <div class="controls">
+    <div class="week-select-wrap">
+      <label>Week:</label>
+      <select id="weekPicker"></select>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-btn" id="prevBtn" title="Previous week">◀</button>
+      <button class="nav-btn" id="nextBtn" title="Next week">▶</button>
+    </div>
+    <span class="updated-pill">Updated: <strong id="updatedLabel">—</strong></span>
   </div>
 </div>
 
@@ -48,15 +84,7 @@
   <div class="brand-header ixigo">🚂 Ixigo Trains App &nbsp;<span style="font-size:11px;font-weight:400;color:#5b9bd5;">447-577-Z44Z</span></div>
   <table>
     <thead><tr><th style="width:34%">Journey</th><th class="r">Entered</th><th class="r">Timed Out</th><th class="r">Timeout %</th><th class="r">Goal Met</th><th class="r">Conv. %</th></tr></thead>
-    <tbody>
-      <tr><td><div class="jname">Train - Food Journey</div><div class="jlogic">PNs proportional to days left for DOJ</div></td><td class="num">76,124</td><td class="num hi">123,258</td><td class="num hi">161.9%</td><td class="num">1,638</td><td class="num cv">2.15%</td></tr>
-      <tr><td><div class="jname">Food Ordering Dropoff - V2</div><div class="jlogic">Order page viewed but food not clicked</div></td><td class="num">192,677</td><td class="num lo">0</td><td class="num lo">0.0%</td><td class="num">5,412</td><td class="num cv">2.81%</td></tr>
-      <tr><td><div class="jname">Food Order before DOJ v2</div><div class="jlogic">Users with a train in the next 1 day</div></td><td class="num">166,961</td><td class="num hi">160,914</td><td class="num hi">96.4%</td><td class="num">1,736</td><td class="num cv">1.04%</td></tr>
-      <tr><td><div class="jname">Food on Trains - Timing Experiment - 1</div><div class="jlogic">Running status check → serviceable Zoop/Swiggy station</div></td><td class="num">692,593</td><td class="num hi">656,053</td><td class="num hi">94.7%</td><td class="num">3,348</td><td class="num cv">0.48%</td></tr>
-      <tr><td><div class="jname">Food Survey - Jan'26</div><div class="jlogic">Users who enter funnel but decide not to book</div></td><td class="num">296,374</td><td class="num lo">15</td><td class="num lo">0.0%</td><td class="na">N/A</td><td class="na">N/A</td></tr>
-      <tr><td><div class="jname">Running Status Checked but not Order Food v3</div><div class="jlogic">Checked running status, yet to order food</div></td><td class="num">28,227</td><td class="num hi">23,561</td><td class="num hi">83.5%</td><td class="num">171</td><td class="num cv">0.61%</td></tr>
-      <tr><td><div class="jname">PNR Checked but not Order Food v2</div><div class="jlogic">PNR status check, didn't order food next day</div></td><td class="num">16,440</td><td class="num hi">16,328</td><td class="num hi">99.3%</td><td class="num">32</td><td class="num cv">0.19%</td></tr>
-    </tbody>
+    <tbody id="ixigoBody"></tbody>
   </table>
 </div>
 
@@ -64,17 +92,98 @@
   <div class="brand-header ctkt">🎫 ConfirmTkt App &nbsp;<span style="font-size:11px;font-weight:400;color:#d4845a;">R74-58Z-8Z7Z</span></div>
   <table>
     <thead><tr><th style="width:34%">Journey</th><th class="r">Entered</th><th class="r">Timed Out</th><th class="r">Timeout %</th><th class="r">Goal Met</th><th class="r">Conv. %</th></tr></thead>
-    <tbody>
-      <tr><td><div class="jname">Food Journey - Timing Experiment</div><div class="jlogic">Running status check → serviceable Zoop/Swiggy station</div></td><td class="num">583</td><td class="num hi">553</td><td class="num hi">94.9%</td><td class="num">0</td><td class="num cv">0.0%</td></tr>
-      <tr><td><div class="jname">Food Journey - Trains</div><div class="jlogic">PNs proportional to days left for DOJ</div></td><td class="num">144,216</td><td class="num hi">251,786</td><td class="num hi">174.6%</td><td class="num">2,634</td><td class="num cv">1.83%</td></tr>
-      <tr><td><div class="jname">Food Survey - Jan'26</div><div class="jlogic">Users who enter funnel but decide not to book</div></td><td class="num">124,648</td><td class="num lo">3</td><td class="num lo">0.0%</td><td class="na">N/A</td><td class="na">N/A</td></tr>
-      <tr><td><div class="jname">Running status Checked But No order food v3</div><div class="jlogic">Checked running status, didn't order food</div></td><td class="num">4,495</td><td class="num hi">3,898</td><td class="num hi">86.7%</td><td class="num">50</td><td class="num cv">1.11%</td></tr>
-      <tr><td><div class="jname">Food Ordering Dropoff - V1</div><div class="jlogic">Order page viewed but food not clicked</div></td><td class="num">100,496</td><td class="num hi">108,208</td><td class="num hi">107.7%</td><td class="num">4,930</td><td class="num cv">4.91%</td></tr>
-      <tr><td><div class="jname">Post Train Book Food Order | 29 Apr 2025</div><div class="jlogic">User has booked a train but not food</div></td><td class="num">216,283</td><td class="num hi">217,640</td><td class="num hi">100.6%</td><td class="num">504</td><td class="num cv">0.23%</td></tr>
-    </tbody>
+    <tbody id="ctktBody"></tbody>
   </table>
 </div>
 
-<div class="footer">Auto-updated every Wednesday at 3 PM · Source: CleverTap Journey Stats · Last 7 days</div>
+<div class="footer"><span class="dot"></span>Auto-updated every Wednesday at 3 PM · CleverTap Journey Stats · Last 7 days</div>
+
+<script>
+// ─── WEEKS DATA — scheduled task prepends a new entry each Wednesday ──────────
+const WEEKS_DATA = [
+  {
+    weekRange: "Apr 15 – Apr 21, 2026",
+    lastUpdated: "Wed Apr 22, 2026",
+    ixigo: [
+      { name: "Train - Food Journey",                         logic: "PNs proportional to days left for DOJ",                  id: 427, entered: 76124,  timedOut: 123258, goalMet: 1638 },
+      { name: "Food Ordering Dropoff - V2",                   logic: "Order page viewed but food not clicked",                 id: 461, entered: 192677, timedOut: 0,      goalMet: 5412 },
+      { name: "Food Order before DOJ v2",                     logic: "Users with a train in the next 1 day",                   id: 460, entered: 166961, timedOut: 160914, goalMet: 1736 },
+      { name: "Food on Trains - Timing Experiment - 1",       logic: "Running status check → serviceable Zoop/Swiggy station", id: 459, entered: 692593, timedOut: 656053, goalMet: 3348 },
+      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 410, entered: 296374, timedOut: 15,     goalMet: null },
+      { name: "Running Status Checked but not Order Food v3", logic: "Checked running status, yet to order food",              id: 327, entered: 28227,  timedOut: 23561,  goalMet: 171  },
+      { name: "PNR Checked but not Order Food v2",            logic: "PNR status check, didn't order food next day",           id: 326, entered: 16440,  timedOut: 16328,  goalMet: 32   },
+    ],
+    confirmtkt: [
+      { name: "Food Journey - Timing Experiment",             logic: "Running status check → serviceable Zoop/Swiggy station", id: 249, entered: 583,    timedOut: 553,    goalMet: 0    },
+      { name: "Food Journey - Trains",                        logic: "PNs proportional to days left for DOJ",                  id: 246, entered: 144216, timedOut: 251786, goalMet: 2634 },
+      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 219, entered: 124648, timedOut: 3,      goalMet: null },
+      { name: "Running status Checked But No order food v3",  logic: "Checked running status, didn't order food",              id: 179, entered: 4495,   timedOut: 3898,   goalMet: 50   },
+      { name: "Food Ordering Dropoff - V1",                   logic: "Order page viewed but food not clicked",                 id: 115, entered: 100496, timedOut: 108208, goalMet: 4930 },
+      { name: "Post Train Book Food Order | 29 Apr 2025",     logic: "User has booked a train but not food",                   id: 137, entered: 216283, timedOut: 217640, goalMet: 504  },
+    ]
+  }
+];
+// ─────────────────────────────────────────────────────────────────────────────
+
+let currentIdx = 0;
+
+function fmt(n) {
+  if (n === null || n === undefined) return null;
+  if (n >= 1000000) return (n/1000000).toFixed(2)+'M';
+  if (n >= 1000)    return (n/1000).toFixed(1)+'k';
+  return n.toLocaleString();
+}
+function pctVal(a, b) {
+  if (a === null || !b || b === 0) return null;
+  return ((a/b)*100).toFixed(1)+'%';
+}
+function timeoutCls(to, en) {
+  if (to === null || !en) return '';
+  const r = to/en;
+  return r > 0.6 ? 'hi' : r > 0.25 ? 'md' : 'lo';
+}
+function cell(val, cls) {
+  if (val === null || val === undefined) return `<td class="na num">N/A</td>`;
+  return `<td class="num ${cls||''}">${val}</td>`;
+}
+function renderRows(tbodyId, rows) {
+  document.getElementById(tbodyId).innerHTML = rows.map(r => {
+    const toCls = timeoutCls(r.timedOut, r.entered);
+    return `<tr>
+      <td><div class="jname">${r.name}</div><div class="jlogic">${r.logic}</div></td>
+      ${cell(fmt(r.entered))}
+      ${cell(r.timedOut !== null ? fmt(r.timedOut) : null, toCls)}
+      ${cell(pctVal(r.timedOut, r.entered), toCls)}
+      ${cell(r.goalMet !== null ? fmt(r.goalMet) : null)}
+      ${cell(pctVal(r.goalMet, r.entered), 'cv')}
+    </tr>`;
+  }).join('');
+}
+
+function render(idx) {
+  const w = WEEKS_DATA[idx];
+  document.getElementById('updatedLabel').textContent = w.lastUpdated;
+  document.getElementById('weekPicker').value = idx;
+  document.getElementById('prevBtn').disabled = idx >= WEEKS_DATA.length - 1;
+  document.getElementById('nextBtn').disabled = idx <= 0;
+  renderRows('ixigoBody',  w.ixigo);
+  renderRows('ctktBody',   w.confirmtkt);
+  currentIdx = idx;
+}
+
+function buildPicker() {
+  const sel = document.getElementById('weekPicker');
+  sel.innerHTML = WEEKS_DATA.map((w,i) =>
+    `<option value="${i}">${w.weekRange}</option>`
+  ).join('');
+  sel.addEventListener('change', e => render(+e.target.value));
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => { if (currentIdx < WEEKS_DATA.length-1) render(currentIdx+1); });
+document.getElementById('nextBtn').addEventListener('click', () => { if (currentIdx > 0) render(currentIdx-1); });
+
+buildPicker();
+render(0);
+</script>
 </body>
 </html>
