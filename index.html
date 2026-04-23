@@ -39,14 +39,12 @@
   td { padding: 10px 14px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
   tr.journey-row:hover td { background: #fafbfc; }
 
-  /* expand toggle */
   .expand-btn { cursor: pointer; font-size: 9px; color: #adb5bd; margin-right: 6px; display: inline-block; transition: transform 0.2s; user-select: none; vertical-align: middle; }
   .expand-btn.open { transform: rotate(90deg); color: #0055a5; }
   .jinfo { display: inline-block; vertical-align: middle; }
   .jname { font-weight: 600; color: #212529; font-size: 12.5px; }
   .jlogic { font-size: 11px; color: #adb5bd; margin-top: 2px; line-height: 1.4; }
 
-  /* daily sub-rows */
   .daily-row { background: #f4f6fb; }
   .daily-row td { padding: 6px 14px; border-bottom: 1px solid #eaecf4; font-size: 11.5px; }
   .daily-row:hover td { background: #eef0f8; }
@@ -55,7 +53,6 @@
   .d-num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; color: #495057; white-space: nowrap; }
   .d-na  { text-align: right; color: #ced4da; font-size: 11px; }
 
-  /* number cells */
   .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
   .hi { color: #dc3545; } .md { color: #fd7e14; } .lo { color: #198754; }
   .cv { color: #0d6efd; }
@@ -64,7 +61,6 @@
   .incr-neg  { color: #dc3545; font-weight: 700; }
   .incr-zero { color: #adb5bd; font-weight: 600; }
 
-  /* tooltip */
   .tip { position: relative; cursor: help; border-bottom: 1px dashed #adb5bd; }
   .tip:hover::after { content: attr(data-tip); position: absolute; bottom: 130%; right: 0; background: #212529; color: white; font-size: 10px; padding: 4px 8px; border-radius: 5px; white-space: nowrap; z-index: 9; font-weight: 400; text-transform: none; letter-spacing: 0; }
 
@@ -100,7 +96,7 @@
       <th class="r">Timeout %</th>
       <th class="r">Goal Met</th>
       <th class="r">Conv. %</th>
-      <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered. Needs hold-out group in CleverTap.">Incr. Bookings</span></th>
+      <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered"">Incr. Bookings</span></th>
     </tr></thead>
     <tbody id="ixigoBody"></tbody>
   </table>
@@ -116,7 +112,7 @@
       <th class="r">Timeout %</th>
       <th class="r">Goal Met</th>
       <th class="r">Conv. %</th>
-      <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered. Needs hold-out group in CleverTap.">Incr. Bookings</span></th>
+      <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
     </tr></thead>
     <tbody id="ctktBody"></tbody>
   </table>
@@ -125,38 +121,31 @@
 <div class="footer"><span class="dot"></span>Weekly update Wed 3 PM · Daily update 9 AM · Source: CleverTap Journey Stats</div>
 
 <script>
-// ─── DATA ─────────────────────────────────────────────────────────────────────
-// Weekly task (Wed 3 PM): prepends new entry to WEEKS_DATA[]
-// Daily task (9 AM): adds yesterday to WEEKS_DATA[0].ixigo[n].daily[]
-//                    fills controlConvPct where CleverTap shows a hold-out group
-//
-// Journey shape: { name, logic, id, entered, timedOut, goalMet,
-//   controlConvPct,   // number like 1.4 means 1.4%, or null
-//   daily: [{ date:"Apr 15", dow:"Wed", entered, timedOut, goalMet }] }
+// controlConvPct = Journey Control Group conversion % from CleverTap (number, e.g. 2.08 = 2.08%)
+// Incremental Bookings = (goalMet/entered − controlConvPct/100) × entered
 const WEEKS_DATA = [
   {
     weekRange: "Apr 15 – Apr 21, 2026",
     lastUpdated: "Thu Apr 23, 2026",
     ixigo: [
-      { name: "Train - Food Journey",                         logic: "PNs proportional to days left for DOJ",                  id: 427, entered: 76124,  timedOut: 123258, goalMet: 1638, controlConvPct: null, daily: [] },
-      { name: "Food Ordering Dropoff - V2",                   logic: "Order page viewed but food not clicked",                 id: 461, entered: 192677, timedOut: 0,      goalMet: 5412, controlConvPct: null, daily: [] },
-      { name: "Food Order before DOJ v2",                     logic: "Users with a train in the next 1 day",                   id: 460, entered: 166961, timedOut: 160914, goalMet: 1736, controlConvPct: null, daily: [] },
-      { name: "Food on Trains - Timing Experiment - 1",       logic: "Running status check → serviceable Zoop/Swiggy station", id: 459, entered: 692593, timedOut: 656053, goalMet: 3348, controlConvPct: null, daily: [] },
+      { name: "Train - Food Journey",                         logic: "PNs proportional to days left for DOJ",                  id: 427, entered: 76124,  timedOut: 123258, goalMet: 1638, controlConvPct: 2.08, daily: [] },
+      { name: "Food Ordering Dropoff - V2",                   logic: "Order page viewed but food not clicked",                 id: 461, entered: 192677, timedOut: 0,      goalMet: 5412, controlConvPct: 2.45, daily: [] },
+      { name: "Food Order before DOJ v2",                     logic: "Users with a train in the next 1 day",                   id: 460, entered: 166961, timedOut: 160914, goalMet: 1736, controlConvPct: 1.02, daily: [] },
+      { name: "Food on Trains - Timing Experiment - 1",       logic: "Running status check → serviceable Zoop/Swiggy station", id: 459, entered: 692593, timedOut: 656053, goalMet: 3348, controlConvPct: 0.50, daily: [] },
       { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 410, entered: 296374, timedOut: 15,     goalMet: null, controlConvPct: null, daily: [] },
-      { name: "Running Status Checked but not Order Food v3", logic: "Checked running status, yet to order food",              id: 327, entered: 28227,  timedOut: 23561,  goalMet: 171,  controlConvPct: null, daily: [] },
-      { name: "PNR Checked but not Order Food v2",            logic: "PNR status check, didn't order food next day",           id: 326, entered: 16440,  timedOut: 16328,  goalMet: 32,   controlConvPct: null, daily: [] },
+      { name: "Running Status Checked but not Order Food v3", logic: "Checked running status, yet to order food",              id: 327, entered: 28227,  timedOut: 23561,  goalMet: 171,  controlConvPct: 0.78, daily: [] },
+      { name: "PNR Checked but not Order Food v2",            logic: "PNR status check, didn't order food next day",           id: 326, entered: 16440,  timedOut: 16328,  goalMet: 32,   controlConvPct: 0.27, daily: [] },
     ],
     confirmtkt: [
-      { name: "Food Journey - Timing Experiment",             logic: "Running status check → serviceable Zoop/Swiggy station", id: 249, entered: 583,    timedOut: 553,    goalMet: 0,    controlConvPct: null, daily: [] },
-      { name: "Food Journey - Trains",                        logic: "PNs proportional to days left for DOJ",                  id: 246, entered: 144216, timedOut: 251786, goalMet: 2634, controlConvPct: null, daily: [] },
+      { name: "Food Journey - Timing Experiment",             logic: "Running status check → serviceable Zoop/Swiggy station", id: 249, entered: 583,    timedOut: 553,    goalMet: 0,    controlConvPct: 1.37, daily: [] },
+      { name: "Food Journey - Trains",                        logic: "PNs proportional to days left for DOJ",                  id: 246, entered: 144216, timedOut: 251786, goalMet: 2634, controlConvPct: 1.78, daily: [] },
       { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 219, entered: 124648, timedOut: 3,      goalMet: null, controlConvPct: null, daily: [] },
-      { name: "Running status Checked But No order food v3",  logic: "Checked running status, didn't order food",              id: 179, entered: 4495,   timedOut: 3898,   goalMet: 50,   controlConvPct: null, daily: [] },
-      { name: "Food Ordering Dropoff - V1",                   logic: "Order page viewed but food not clicked",                 id: 115, entered: 100496, timedOut: 108208, goalMet: 4930, controlConvPct: null, daily: [] },
-      { name: "Post Train Book Food Order | 29 Apr 2025",     logic: "User has booked a train but not food",                   id: 137, entered: 216283, timedOut: 217640, goalMet: 504,  controlConvPct: null, daily: [] },
+      { name: "Running status Checked But No order food v3",  logic: "Checked running status, didn't order food",              id: 179, entered: 4495,   timedOut: 3898,   goalMet: 50,   controlConvPct: 1.25, daily: [] },
+      { name: "Food Ordering Dropoff - V1",                   logic: "Order page viewed but food not clicked",                 id: 115, entered: 100496, timedOut: 108208, goalMet: 4930, controlConvPct: 3.48, daily: [] },
+      { name: "Post Train Book Food Order | 29 Apr 2025",     logic: "User has booked a train but not food",                   id: 137, entered: 216283, timedOut: 217640, goalMet: 504,  controlConvPct: 0.09, daily: [] },
     ]
   }
 ];
-// ─────────────────────────────────────────────────────────────────────────────
 
 let currentIdx = 0;
 
@@ -196,7 +185,7 @@ function toggleDaily(btn, key) {
 function buildDailyRows(r, key) {
   if (!r.daily || r.daily.length === 0) {
     return `<tr class="daily-row d-${key}" style="display:none">
-      <td colspan="7" class="daily-date" style="color:#ced4da;font-size:11px;font-style:italic;">Daily data is collected at 9 AM each day — check back tomorrow</td>
+      <td colspan="7" class="daily-date" style="color:#ced4da;font-size:11px;font-style:italic;">Daily data collected at 9 AM each day — check back tomorrow</td>
     </tr>`;
   }
   return r.daily.map(d => {
