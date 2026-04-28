@@ -1,27 +1,25 @@
-<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
-{
-  "name": "Food Journey Weekly Tracker",
-  "schemaVersion": 1,
-  "description": "Weekly tracker for all Food on Trains journeys across Ixigo Trains and ConfirmTkt, populated every Monday by a scheduled task from CleverTap Journey Stats."
-}
-</script>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Food on Trains — Weekly Journey Tracker</title>
+<title>Food on Trains — Journey Tracker</title>
 <style>
   :root { color-scheme: light; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #1a1a2e; padding: 20px 24px 32px; min-height: 100vh; }
 
-  .header { margin-bottom: 20px; }
+  .header { margin-bottom: 16px; }
   .header h1 { font-size: 18px; font-weight: 700; color: #1a1a2e; }
-  .controls { margin-top: 10px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .week-select-wrap { display: flex; align-items: center; gap: 8px; }
-  .week-select-wrap label { font-size: 12px; font-weight: 600; color: #6c757d; }
-  select#weekPicker { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 5px 10px; font-size: 13px; font-weight: 600; color: #212529; cursor: pointer; outline: none; }
-  select#weekPicker:focus { border-color: #0055a5; }
+
+  .view-tabs { display: flex; gap: 0; margin-top: 12px; margin-bottom: 14px; background: #e9ecef; border-radius: 10px; padding: 3px; width: fit-content; }
+  .view-tab { padding: 6px 18px; font-size: 13px; font-weight: 600; border: none; background: transparent; border-radius: 8px; cursor: pointer; color: #6c757d; transition: all 0.15s; }
+  .view-tab.active { background: white; color: #1a1a2e; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+
+  .controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .picker-wrap { display: flex; align-items: center; gap: 8px; }
+  .picker-wrap label { font-size: 12px; font-weight: 600; color: #6c757d; }
+  select.picker { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 5px 10px; font-size: 13px; font-weight: 600; color: #212529; cursor: pointer; outline: none; }
+  select.picker:focus { border-color: #0055a5; }
   .nav-btns { display: flex; gap: 4px; }
   .nav-btn { background: white; border: 1px solid #dee2e6; border-radius: 6px; padding: 4px 10px; font-size: 13px; cursor: pointer; color: #495057; transition: all 0.15s; }
   .nav-btn:hover:not(:disabled) { background: #e9ecef; }
@@ -64,91 +62,152 @@
   .tip { position: relative; cursor: help; border-bottom: 1px dashed #adb5bd; }
   .tip:hover::after { content: attr(data-tip); position: absolute; bottom: 130%; right: 0; background: #212529; color: white; font-size: 10px; padding: 4px 8px; border-radius: 5px; white-space: nowrap; z-index: 9; font-weight: 400; text-transform: none; letter-spacing: 0; }
 
+  .empty-state { padding: 32px 20px; text-align: center; color: #adb5bd; font-size: 13px; }
+  .empty-state p { margin-top: 6px; font-size: 11px; }
+
   .footer { text-align: center; font-size: 11px; color: #ced4da; margin-top: 16px; }
   .dot { width:7px;height:7px;border-radius:50%;display:inline-block;background:#22c55e;margin-right:4px;animation:pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
+
+  #weeklyView, #dailyView { display: none; }
+  #weeklyView.active, #dailyView.active { display: block; }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>🍱 Food on Trains — Weekly Journey Tracker</h1>
-  <div class="controls">
-    <div class="week-select-wrap">
-      <label>Week:</label>
-      <select id="weekPicker"></select>
-    </div>
-    <div class="nav-btns">
-      <button class="nav-btn" id="prevBtn" title="Older week">◀</button>
-      <button class="nav-btn" id="nextBtn" title="Newer week">▶</button>
-    </div>
-    <span class="updated-pill">Updated: <strong id="updatedLabel">—</strong></span>
+  <h1>🍱 Food on Trains — Journey Tracker</h1>
+  <div class="view-tabs">
+    <button class="view-tab active" id="tabWeekly" onclick="switchView('weekly')">📅 Weekly</button>
+    <button class="view-tab" id="tabDaily" onclick="switchView('daily')">📆 Daily</button>
   </div>
 </div>
 
-<div class="brand-section">
-  <div class="brand-header ixigo">🚂 Ixigo Trains App &nbsp;<span style="font-size:11px;font-weight:400;color:#5b9bd5;">447-577-Z44Z</span></div>
-  <table>
-    <thead><tr>
-      <th style="width:31%">Journey</th>
-      <th class="r">Entered</th>
-      <th class="r">Timed Out</th>
-      <th class="r">Timeout %</th>
-      <th class="r">Goal Met</th>
-      <th class="r">Conv. %</th>
-      <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered"">Incr. Bookings</span></th>
-    </tr></thead>
-    <tbody id="ixigoBody"></tbody>
-  </table>
+<!-- WEEKLY VIEW -->
+<div id="weeklyView" class="active">
+  <div class="controls">
+    <div class="picker-wrap">
+      <label>Week:</label>
+      <select id="weekPicker" class="picker"></select>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-btn" id="prevWeekBtn" title="Older week">◀</button>
+      <button class="nav-btn" id="nextWeekBtn" title="Newer week">▶</button>
+    </div>
+    <span class="updated-pill">Updated: <strong id="updatedLabel">—</strong></span>
+  </div>
+
+  <div class="brand-section">
+    <div class="brand-header ixigo">🚂 Ixigo Trains App &nbsp;<span style="font-size:11px;font-weight:400;color:#5b9bd5;">447-577-Z44Z</span></div>
+    <table>
+      <thead><tr>
+        <th style="width:31%">Journey</th>
+        <th class="r">Entered</th>
+        <th class="r">Timed Out</th>
+        <th class="r">Timeout %</th>
+        <th class="r">Goal Met</th>
+        <th class="r">Conv. %</th>
+        <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
+      </tr></thead>
+      <tbody id="ixigoBody"></tbody>
+    </table>
+  </div>
+
+  <div class="brand-section">
+    <div class="brand-header ctkt">🎫 ConfirmTkt App &nbsp;<span style="font-size:11px;font-weight:400;color:#d4845a;">R74-58Z-8Z7Z</span></div>
+    <table>
+      <thead><tr>
+        <th style="width:31%">Journey</th>
+        <th class="r">Entered</th>
+        <th class="r">Timed Out</th>
+        <th class="r">Timeout %</th>
+        <th class="r">Goal Met</th>
+        <th class="r">Conv. %</th>
+        <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
+      </tr></thead>
+      <tbody id="ctktBody"></tbody>
+    </table>
+  </div>
 </div>
 
-<div class="brand-section">
-  <div class="brand-header ctkt">🎫 ConfirmTkt App &nbsp;<span style="font-size:11px;font-weight:400;color:#d4845a;">R74-58Z-8Z7Z</span></div>
-  <table>
-    <thead><tr>
-      <th style="width:31%">Journey</th>
-      <th class="r">Entered</th>
-      <th class="r">Timed Out</th>
-      <th class="r">Timeout %</th>
-      <th class="r">Goal Met</th>
-      <th class="r">Conv. %</th>
-      <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
-    </tr></thead>
-    <tbody id="ctktBody"></tbody>
-  </table>
+<!-- DAILY VIEW -->
+<div id="dailyView">
+  <div class="controls">
+    <div class="picker-wrap">
+      <label>Date:</label>
+      <select id="dayPicker" class="picker"></select>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-btn" id="prevDayBtn" title="Previous day">◀</button>
+      <button class="nav-btn" id="nextDayBtn" title="Next day">▶</button>
+    </div>
+    <span class="updated-pill" id="dailyUpdatedPill"></span>
+  </div>
+
+  <div class="brand-section">
+    <div class="brand-header ixigo">🚂 Ixigo Trains App &nbsp;<span style="font-size:11px;font-weight:400;color:#5b9bd5;">447-577-Z44Z</span></div>
+    <table>
+      <thead><tr>
+        <th style="width:31%">Journey</th>
+        <th class="r">Entered</th>
+        <th class="r">Timed Out</th>
+        <th class="r">Timeout %</th>
+        <th class="r">Goal Met</th>
+        <th class="r">Conv. %</th>
+      </tr></thead>
+      <tbody id="dailyIxigoBody"></tbody>
+    </table>
+  </div>
+
+  <div class="brand-section">
+    <div class="brand-header ctkt">🎫 ConfirmTkt App &nbsp;<span style="font-size:11px;font-weight:400;color:#d4845a;">R74-58Z-8Z7Z</span></div>
+    <table>
+      <thead><tr>
+        <th style="width:31%">Journey</th>
+        <th class="r">Entered</th>
+        <th class="r">Timed Out</th>
+        <th class="r">Timeout %</th>
+        <th class="r">Goal Met</th>
+        <th class="r">Conv. %</th>
+      </tr></thead>
+      <tbody id="dailyCtktBody"></tbody>
+    </table>
+  </div>
 </div>
 
 <div class="footer"><span class="dot"></span>Weekly update Wed 3 PM · Daily update 9 AM · Source: CleverTap Journey Stats</div>
 
 <script>
-// controlConvPct = Journey Control Group conversion % from CleverTap (number, e.g. 2.08 = 2.08%)
-// Incremental Bookings = (goalMet/entered − controlConvPct/100) × entered
 const WEEKS_DATA = [
   {
     weekRange: "Apr 15 – Apr 21, 2026",
-    lastUpdated: "Tue Apr 28, 2026",
+    lastUpdated: "Thu Apr 23, 2026",
     ixigo: [
-      { name: "Train - Food Journey",                         logic: "PNs proportional to days left for DOJ",                  id: 427, entered: 76124,  timedOut: 123258, goalMet: 1638, controlConvPct: 2.08, daily: [{ date: "Apr 27", dow: "Mon", entered: 9580, timedOut: 12959, goalMet: 202 }] },
-      { name: "Food Ordering Dropoff - V2",                   logic: "Order page viewed but food not clicked",                 id: 461, entered: 192677, timedOut: 0,      goalMet: 5412, controlConvPct: 2.45, daily: [{ date: "Apr 27", dow: "Mon", entered: 27224, timedOut: 0, goalMet: 981 }] },
-      { name: "Food Order before DOJ v2",                     logic: "Users with a train in the next 1 day",                   id: 460, entered: 166961, timedOut: 160914, goalMet: 1736, controlConvPct: 1.02, daily: [{ date: "Apr 27", dow: "Mon", entered: 23523, timedOut: 24944, goalMet: 259 }] },
-      { name: "Food on Trains - Timing Experiment - 1",       logic: "Running status check → serviceable Zoop/Swiggy station", id: 459, entered: 692593, timedOut: 656053, goalMet: 3348, controlConvPct: 0.50, daily: [{ date: "Apr 27", dow: "Mon", entered: 0, timedOut: 3, goalMet: 0 }] },
-      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 410, entered: 296374, timedOut: 15,     goalMet: null, controlConvPct: null, daily: [{ date: "Apr 27", dow: "Mon", entered: 43218, timedOut: 0, goalMet: null }] },
-      { name: "Running Status Checked but not Order Food v3", logic: "Checked running status, yet to order food",              id: 327, entered: 28227,  timedOut: 23561,  goalMet: 171,  controlConvPct: 0.78, daily: [{ date: "Apr 27", dow: "Mon", entered: 4248, timedOut: 4257, goalMet: 31 }] },
-      { name: "PNR Checked but not Order Food v2",            logic: "PNR status check, didn't order food next day",           id: 326, entered: 16440,  timedOut: 16328,  goalMet: 32,   controlConvPct: 0.27, daily: [{ date: "Apr 27", dow: "Mon", entered: 2015, timedOut: 2267, goalMet: 2 }] },
+      { name: "Train - Food Journey",                         logic: "PNs proportional to days left for DOJ",                  id: 427, entered: 76124,  timedOut: 123258, goalMet: 1638, controlConvPct: 2.08, daily: [] },
+      { name: "Food Ordering Dropoff - V2",                   logic: "Order page viewed but food not clicked",                 id: 461, entered: 192677, timedOut: 0,      goalMet: 5412, controlConvPct: 2.45, daily: [] },
+      { name: "Food Order before DOJ v2",                     logic: "Users with a train in the next 1 day",                   id: 460, entered: 166961, timedOut: 160914, goalMet: 1736, controlConvPct: 1.02, daily: [] },
+      { name: "Food on Trains - Timing Experiment - 1",       logic: "Running status check → serviceable Zoop/Swiggy station", id: 459, entered: 692593, timedOut: 656053, goalMet: 3348, controlConvPct: 0.50, daily: [] },
+      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 410, entered: 296374, timedOut: 15,     goalMet: null, controlConvPct: null, daily: [] },
+      { name: "Running Status Checked but not Order Food v3", logic: "Checked running status, yet to order food",              id: 327, entered: 28227,  timedOut: 23561,  goalMet: 171,  controlConvPct: 0.78, daily: [] },
+      { name: "PNR Checked but not Order Food v2",            logic: "PNR status check, didn't order food next day",           id: 326, entered: 16440,  timedOut: 16328,  goalMet: 32,   controlConvPct: 0.27, daily: [] },
     ],
     confirmtkt: [
-      { name: "Food Journey - Timing Experiment",             logic: "Running status check → serviceable Zoop/Swiggy station", id: 249, entered: 583,    timedOut: 553,    goalMet: 0,    controlConvPct: 1.37, daily: [{ date: "Apr 27", dow: "Mon", entered: 0, timedOut: 0, goalMet: 0 }] },
-      { name: "Food Journey - Trains",                        logic: "PNs proportional to days left for DOJ",                  id: 246, entered: 144216, timedOut: 251786, goalMet: 2634, controlConvPct: 1.78, daily: [{ date: "Apr 27", dow: "Mon", entered: 18451, timedOut: 25068, goalMet: 331 }] },
-      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 219, entered: 124648, timedOut: 3,      goalMet: null, controlConvPct: null, daily: [{ date: "Apr 27", dow: "Mon", entered: 18735, timedOut: 1, goalMet: null }] },
-      { name: "Running status Checked But No order food v3",  logic: "Checked running status, didn't order food",              id: 179, entered: 4495,   timedOut: 3898,   goalMet: 50,   controlConvPct: 1.25, daily: [{ date: "Apr 27", dow: "Mon", entered: 672, timedOut: 667, goalMet: 14 }] },
-      { name: "Food Ordering Dropoff - V1",                   logic: "Order page viewed but food not clicked",                 id: 115, entered: 100496, timedOut: 108208, goalMet: 4930, controlConvPct: 3.48, daily: [{ date: "Apr 27", dow: "Mon", entered: 13647, timedOut: 13004, goalMet: 817 }] },
-      { name: "Post Train Book Food Order | 29 Apr 2025",     logic: "User has booked a train but not food",                   id: 137, entered: 216283, timedOut: 217640, goalMet: 504,  controlConvPct: 0.09, daily: [{ date: "Apr 27", dow: "Mon", entered: 29570, timedOut: 30068, goalMet: 78 }] },
+      { name: "Food Journey - Timing Experiment",             logic: "Running status check → serviceable Zoop/Swiggy station", id: 249, entered: 583,    timedOut: 553,    goalMet: 0,    controlConvPct: 1.37, daily: [] },
+      { name: "Food Journey - Trains",                        logic: "PNs proportional to days left for DOJ",                  id: 246, entered: 144216, timedOut: 251786, goalMet: 2634, controlConvPct: 1.78, daily: [] },
+      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 219, entered: 124648, timedOut: 3,      goalMet: null, controlConvPct: null, daily: [] },
+      { name: "Running status Checked But No order food v3",  logic: "Checked running status, didn't order food",              id: 179, entered: 4495,   timedOut: 3898,   goalMet: 50,   controlConvPct: 1.25, daily: [] },
+      { name: "Food Ordering Dropoff - V1",                   logic: "Order page viewed but food not clicked",                 id: 115, entered: 100496, timedOut: 108208, goalMet: 4930, controlConvPct: 3.48, daily: [] },
+      { name: "Post Train Book Food Order | 29 Apr 2025",     logic: "User has booked a train but not food",                   id: 137, entered: 216283, timedOut: 217640, goalMet: 504,  controlConvPct: 0.09, daily: [] },
     ]
   }
 ];
 
-let currentIdx = 0;
+let currentWeekIdx = 0;
+let currentDayIdx  = 0;
+let currentView    = 'weekly';
+let allDates       = []; // [{date, dow, weekIdx}]
 
+// ── helpers ──────────────────────────────────────────────────────────────────
 function fmt(n) {
   if (n == null) return null;
   if (n >= 1e6) return (n/1e6).toFixed(2)+'M';
@@ -177,6 +236,7 @@ function incrCell(v) {
   return `<td class="num ${cls}">${sign}${v.toLocaleString()}</td>`;
 }
 
+// ── WEEKLY VIEW ──────────────────────────────────────────────────────────────
 function toggleDaily(btn, key) {
   const open = btn.classList.toggle('open');
   document.querySelectorAll(`.d-${key}`).forEach(r => r.style.display = open ? 'table-row' : 'none');
@@ -202,7 +262,7 @@ function buildDailyRows(r, key) {
   }).join('');
 }
 
-function renderRows(tbodyId, rows, prefix) {
+function renderWeeklyRows(tbodyId, rows, prefix) {
   document.getElementById(tbodyId).innerHTML = rows.map(r => {
     const tc   = toCls(r.timedOut, r.entered);
     const incr = calcIncr(r.goalMet, r.entered, r.controlConvPct);
@@ -225,28 +285,122 @@ function renderRows(tbodyId, rows, prefix) {
   }).join('');
 }
 
-function render(idx) {
+function renderWeek(idx) {
   const w = WEEKS_DATA[idx];
   document.getElementById('updatedLabel').textContent = w.lastUpdated;
   document.getElementById('weekPicker').value = idx;
-  document.getElementById('prevBtn').disabled = idx >= WEEKS_DATA.length - 1;
-  document.getElementById('nextBtn').disabled = idx <= 0;
-  renderRows('ixigoBody', w.ixigo,      'ix');
-  renderRows('ctktBody',  w.confirmtkt, 'ct');
-  currentIdx = idx;
+  document.getElementById('prevWeekBtn').disabled = idx >= WEEKS_DATA.length - 1;
+  document.getElementById('nextWeekBtn').disabled = idx <= 0;
+  renderWeeklyRows('ixigoBody',  w.ixigo,      'ix');
+  renderWeeklyRows('ctktBody',   w.confirmtkt, 'ct');
+  currentWeekIdx = idx;
 }
 
-function buildPicker() {
+function buildWeekPicker() {
   const sel = document.getElementById('weekPicker');
   sel.innerHTML = WEEKS_DATA.map((w,i) => `<option value="${i}">${w.weekRange}</option>`).join('');
-  sel.addEventListener('change', e => render(+e.target.value));
+  sel.addEventListener('change', e => renderWeek(+e.target.value));
 }
 
-document.getElementById('prevBtn').addEventListener('click', () => { if (currentIdx < WEEKS_DATA.length-1) render(currentIdx+1); });
-document.getElementById('nextBtn').addEventListener('click', () => { if (currentIdx > 0) render(currentIdx-1); });
+document.getElementById('prevWeekBtn').addEventListener('click', () => { if (currentWeekIdx < WEEKS_DATA.length-1) renderWeek(currentWeekIdx+1); });
+document.getElementById('nextWeekBtn').addEventListener('click', () => { if (currentWeekIdx > 0) renderWeek(currentWeekIdx-1); });
 
-buildPicker();
-render(0);
+// ── DAILY VIEW ───────────────────────────────────────────────────────────────
+function buildAllDates() {
+  const seen = new Set();
+  const list = [];
+  WEEKS_DATA.forEach((w, wIdx) => {
+    [...w.ixigo, ...w.confirmtkt].forEach(r => {
+      (r.daily || []).forEach(d => {
+        if (!seen.has(d.date)) {
+          seen.add(d.date);
+          list.push({ date: d.date, dow: d.dow || '', weekIdx: wIdx });
+        }
+      });
+    });
+  });
+  // sort descending (newest first)
+  list.sort((a, b) => new Date(b.date) - new Date(a.date));
+  return list;
+}
+
+function renderDailyRows(tbodyId, rows, date) {
+  const tbody = document.getElementById(tbodyId);
+  if (!date) {
+    tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No daily data available yet.<p>Daily numbers are collected at 9 AM each day — check back tomorrow.</p></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.map(r => {
+    const d = (r.daily || []).find(x => x.date === date);
+    if (!d) {
+      return `<tr class="journey-row">
+        <td><span class="jinfo"><div class="jname">${r.name}</div><div class="jlogic">${r.logic}</div></span></td>
+        <td class="na num">—</td><td class="na num">—</td><td class="na num">—</td><td class="na num">—</td><td class="na num">—</td>
+      </tr>`;
+    }
+    const tc = toCls(d.timedOut, d.entered);
+    return `<tr class="journey-row">
+      <td><span class="jinfo"><div class="jname">${r.name}</div><div class="jlogic">${r.logic}</div></span></td>
+      ${cell(d.entered != null ? d.entered.toLocaleString() : null)}
+      ${cell(d.timedOut != null ? d.timedOut.toLocaleString() : null, tc)}
+      ${cell(pct(d.timedOut, d.entered), tc)}
+      ${cell(d.goalMet != null ? d.goalMet.toLocaleString() : null)}
+      ${cell(pct(d.goalMet, d.entered), 'cv')}
+    </tr>`;
+  }).join('');
+}
+
+function renderDay(idx) {
+  const picker = document.getElementById('dayPicker');
+  if (!allDates.length) {
+    picker.innerHTML = '<option>No daily data yet</option>';
+    document.getElementById('prevDayBtn').disabled = true;
+    document.getElementById('nextDayBtn').disabled = true;
+    document.getElementById('dailyUpdatedPill').textContent = '';
+    renderDailyRows('dailyIxigoBody',  [], null);
+    renderDailyRows('dailyCtktBody',   [], null);
+    return;
+  }
+  const entry = allDates[idx];
+  const dateLabel = entry.dow ? `${entry.date} (${entry.dow})` : entry.date;
+  picker.value = idx;
+  document.getElementById('prevDayBtn').disabled = idx >= allDates.length - 1;
+  document.getElementById('nextDayBtn').disabled = idx <= 0;
+  document.getElementById('dailyUpdatedPill').textContent = dateLabel;
+  const w = WEEKS_DATA[entry.weekIdx];
+  renderDailyRows('dailyIxigoBody',  w.ixigo,      entry.date);
+  renderDailyRows('dailyCtktBody',   w.confirmtkt, entry.date);
+  currentDayIdx = idx;
+}
+
+function buildDayPicker() {
+  allDates = buildAllDates();
+  const sel = document.getElementById('dayPicker');
+  if (!allDates.length) {
+    sel.innerHTML = '<option>No daily data yet</option>';
+  } else {
+    sel.innerHTML = allDates.map((d, i) => `<option value="${i}">${d.date}${d.dow ? ' (' + d.dow + ')' : ''}</option>`).join('');
+    sel.addEventListener('change', e => renderDay(+e.target.value));
+  }
+}
+
+document.getElementById('prevDayBtn').addEventListener('click', () => { if (currentDayIdx < allDates.length-1) renderDay(currentDayIdx+1); });
+document.getElementById('nextDayBtn').addEventListener('click', () => { if (currentDayIdx > 0) renderDay(currentDayIdx-1); });
+
+// ── VIEW TOGGLE ───────────────────────────────────────────────────────────────
+function switchView(view) {
+  currentView = view;
+  document.getElementById('weeklyView').classList.toggle('active', view === 'weekly');
+  document.getElementById('dailyView').classList.toggle('active',  view === 'daily');
+  document.getElementById('tabWeekly').classList.toggle('active',  view === 'weekly');
+  document.getElementById('tabDaily').classList.toggle('active',   view === 'daily');
+  if (view === 'daily') renderDay(currentDayIdx);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+buildWeekPicker();
+buildDayPicker();
+renderWeek(0);
 </script>
 </body>
 </html>
