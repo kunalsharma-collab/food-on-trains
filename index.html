@@ -83,10 +83,10 @@
 <body>
 
 <div class="header">
-  <h1>&#127857; Food on Trains &#8212; Journey Tracker</h1>
+  <h1>🍱 Food on Trains — Journey Tracker</h1>
   <div class="view-tabs">
-    <button class="view-tab active" id="tabWeekly" onclick="switchView('weekly')">&#128197; Weekly</button>
-    <button class="view-tab" id="tabDaily" onclick="switchView('daily')">&#128198; Daily</button>
+    <button class="view-tab active" id="tabWeekly" onclick="switchView('weekly')">📅 Weekly</button>
+    <button class="view-tab" id="tabDaily" onclick="switchView('daily')">📆 Daily</button>
   </div>
 </div>
 
@@ -98,14 +98,14 @@
       <select id="weekPicker" class="picker"></select>
     </div>
     <div class="nav-btns">
-      <button class="nav-btn" id="prevWeekBtn" title="Older week">&#9664;</button>
-      <button class="nav-btn" id="nextWeekBtn" title="Newer week">&#9654;</button>
+      <button class="nav-btn" id="prevWeekBtn" title="Older week">◀</button>
+      <button class="nav-btn" id="nextWeekBtn" title="Newer week">▶</button>
     </div>
-    <span class="updated-pill">Updated: <strong id="updatedLabel">&#8212;</strong></span>
+    <span class="updated-pill">Updated: <strong id="updatedLabel">—</strong></span>
   </div>
 
   <div class="brand-section">
-    <div class="brand-header ixigo">&#128642; Ixigo Trains App &nbsp;<span style="font-size:11px;font-weight:400;color:#5b9bd5;">447-577-Z44Z</span></div>
+    <div class="brand-header ixigo">🚂 Ixigo Trains App &nbsp;<span style="font-size:11px;font-weight:400;color:#5b9bd5;">447-577-Z44Z</span></div>
     <table>
       <thead><tr>
         <th style="width:31%">Journey</th>
@@ -114,14 +114,14 @@
         <th class="r">Timeout %</th>
         <th class="r">Goal Met</th>
         <th class="r">Conv. %</th>
-        <th class="r"><span class="tip" data-tip="(Journey Conv% &#8722; Control Conv%) &#215; Entered">Incr. Bookings</span></th>
+        <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
       </tr></thead>
       <tbody id="ixigoBody"></tbody>
     </table>
   </div>
 
   <div class="brand-section">
-    <div class="brand-header ctkt">&#127903; ConfirmTkt App &nbsp;<span style="font-size:11px;font-weight:400;color:#d4845a;">R74-58Z-8Z7Z</span></div>
+    <div class="brand-header ctkt">🎫 ConfirmTkt App &nbsp;<span style="font-size:11px;font-weight:400;color:#d4845a;">R74-58Z-8Z7Z</span></div>
     <table>
       <thead><tr>
         <th style="width:31%">Journey</th>
@@ -130,7 +130,7 @@
         <th class="r">Timeout %</th>
         <th class="r">Goal Met</th>
         <th class="r">Conv. %</th>
-        <th class="r"><span class="tip" data-tip="(Journey Conv% &#8722; Control Conv%) &#215; Entered">Incr. Bookings</span></th>
+        <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
       </tr></thead>
       <tbody id="ctktBody"></tbody>
     </table>
@@ -145,14 +145,14 @@
       <select id="dayPicker" class="picker"></select>
     </div>
     <div class="nav-btns">
-      <button class="nav-btn" id="prevDayBtn" title="Previous day">&#9664;</button>
-      <button class="nav-btn" id="nextDayBtn" title="Next day">&#9654;</button>
+      <button class="nav-btn" id="prevDayBtn" title="Previous day">◀</button>
+      <button class="nav-btn" id="nextDayBtn" title="Next day">▶</button>
     </div>
     <span class="updated-pill" id="dailyUpdatedPill"></span>
   </div>
 
   <div class="brand-section">
-    <div class="brand-header ixigo">&#128642; Ixigo Trains App &nbsp;<span style="font-size:11px;font-weight:400;color:#5b9bd5;">447-577-Z44Z</span></div>
+    <div class="brand-header ixigo">🚂 Ixigo Trains App &nbsp;<span style="font-size:11px;font-weight:400;color:#5b9bd5;">447-577-Z44Z</span></div>
     <table>
       <thead><tr>
         <th style="width:31%">Journey</th>
@@ -161,14 +161,14 @@
         <th class="r">Timeout %</th>
         <th class="r">Goal Met</th>
         <th class="r">Conv. %</th>
-        <th class="r"><span class="tip" data-tip="(Journey Conv% &#8722; Control Conv%) &#215; Entered">Incr. Bookings</span></th>
+        <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
       </tr></thead>
       <tbody id="dailyIxigoBody"></tbody>
     </table>
   </div>
 
   <div class="brand-section">
-    <div class="brand-header ctkt">&#127903; ConfirmTkt App &nbsp;<span style="font-size:11px;font-weight:400;color:#d4845a;">R74-58Z-8Z7Z</span></div>
+    <div class="brand-header ctkt">🎫 ConfirmTkt App &nbsp;<span style="font-size:11px;font-weight:400;color:#d4845a;">R74-58Z-8Z7Z</span></div>
     <table>
       <thead><tr>
         <th style="width:31%">Journey</th>
@@ -177,17 +177,77 @@
         <th class="r">Timeout %</th>
         <th class="r">Goal Met</th>
         <th class="r">Conv. %</th>
-        <th class="r"><span class="tip" data-tip="(Journey Conv% &#8722; Control Conv%) &#215; Entered">Incr. Bookings</span></th>
+        <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
       </tr></thead>
       <tbody id="dailyCtktBody"></tbody>
     </table>
   </div>
 </div>
 
-<div class="footer"><span class="dot"></span>Weekly update Wed 3 PM &middot; Daily update 9 AM &middot; Source: CleverTap Journey Stats</div>
+<div class="footer"><span class="dot"></span>Weekly update Wed 3 PM · Daily update 9 AM · Source: CleverTap Journey Stats</div>
 
 <script>
 const WEEKS_DATA = [
+  {
+    weekRange: "Apr 29 – May 5, 2026",
+    lastUpdated: "Thu Apr 30, 2026",
+    ixigo: [
+      { name: "Train - Food Journey",                         logic: "PNs proportional to days left for DOJ",                  id: 427, entered: 12469,  timedOut: 18604,  goalMet: 274,  controlConvPct: 2.08, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 8965,   timedOut: 12868, goalMet: 199  },
+          { date: "Apr 30", dow: "Thu", entered: 3504,   timedOut: 5736,  goalMet: 75   },
+        ] },
+      { name: "Food Ordering Dropoff - V2",                   logic: "Order page viewed but food not clicked",                 id: 461, entered: 35729,  timedOut: 0,      goalMet: 1220, controlConvPct: 2.45, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 25168,  timedOut: 0,     goalMet: 888  },
+          { date: "Apr 30", dow: "Thu", entered: 10561,  timedOut: 0,     goalMet: 332  },
+        ] },
+      { name: "Food Order before DOJ v2",                     logic: "Users with a train in the next 1 day",                   id: 460, entered: 36842,  timedOut: 34967,  goalMet: 324,  controlConvPct: 1.02, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 25168,  timedOut: 24514, goalMet: 231  },
+          { date: "Apr 30", dow: "Thu", entered: 11674,  timedOut: 10453, goalMet: 93   },
+        ] },
+      { name: "Food on Trains - Timing Experiment - 1",       logic: "Running status check → serviceable Zoop/Swiggy station", id: 459, entered: 0,      timedOut: 0,      goalMet: 0,    controlConvPct: 0.50, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 0,      timedOut: 0,     goalMet: 0    },
+          { date: "Apr 30", dow: "Thu", entered: 0,      timedOut: 0,     goalMet: 0    },
+        ] },
+      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 410, entered: 55162,  timedOut: 5,      goalMet: null, controlConvPct: null, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 38738,  timedOut: 5,     goalMet: null },
+          { date: "Apr 30", dow: "Thu", entered: 16424,  timedOut: 0,     goalMet: null },
+        ] },
+      { name: "Running Status Checked but not Order Food v3", logic: "Checked running status, yet to order food",              id: 327, entered: 5546,   timedOut: 5959,   goalMet: 49,   controlConvPct: 0.78, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 3725,   timedOut: 4072,  goalMet: 42   },
+          { date: "Apr 30", dow: "Thu", entered: 1821,   timedOut: 1887,  goalMet: 7    },
+        ] },
+      { name: "PNR Checked but not Order Food v2",            logic: "PNR status check, didn't order food next day",           id: 326, entered: 3101,   timedOut: 3698,   goalMet: 3,    controlConvPct: 0.27, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 2004,   timedOut: 2465,  goalMet: 1    },
+          { date: "Apr 30", dow: "Thu", entered: 1097,   timedOut: 1233,  goalMet: 2    },
+        ] },
+    ],
+    confirmtkt: [
+      { name: "Food Journey - Timing Experiment",             logic: "Running status check → serviceable Zoop/Swiggy station", id: 249, entered: 0,      timedOut: 0,      goalMet: 0,    controlConvPct: 1.37, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 0,      timedOut: 0,     goalMet: 0    },
+          { date: "Apr 30", dow: "Thu", entered: 0,      timedOut: 0,     goalMet: 0    },
+        ] },
+      { name: "Food Journey - Trains",                        logic: "PNs proportional to days left for DOJ",                  id: 246, entered: 24195,  timedOut: 35874,  goalMet: 430,  controlConvPct: 1.78, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 17212,  timedOut: 24818, goalMet: 324  },
+          { date: "Apr 30", dow: "Thu", entered: 6983,   timedOut: 11056, goalMet: 106  },
+        ] },
+      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 219, entered: 24354,  timedOut: 0,      goalMet: null, controlConvPct: null, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 17269,  timedOut: 0,     goalMet: null },
+          { date: "Apr 30", dow: "Thu", entered: 7085,   timedOut: 0,     goalMet: null },
+        ] },
+      { name: "Running status Checked But No order food v3",  logic: "Checked running status, didn't order food",              id: 179, entered: 920,    timedOut: 979,    goalMet: 9,    controlConvPct: 1.25, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 617,    timedOut: 656,   goalMet: 5    },
+          { date: "Apr 30", dow: "Thu", entered: 303,    timedOut: 323,   goalMet: 4    },
+        ] },
+      { name: "Food Ordering Dropoff - V1",                   logic: "Order page viewed but food not clicked",                 id: 115, entered: 18280,  timedOut: 19340,  goalMet: 1060, controlConvPct: 3.48, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 12823,  timedOut: 13885, goalMet: 756  },
+          { date: "Apr 30", dow: "Thu", entered: 5457,   timedOut: 5455,  goalMet: 304  },
+        ] },
+      { name: "Post Train Book Food Order | 29 Apr 2025",     logic: "User has booked a train but not food",                   id: 137, entered: 41460,  timedOut: 41989,  goalMet: 100,  controlConvPct: 0.09, daily: [
+          { date: "Apr 29", dow: "Wed", entered: 29607,  timedOut: 29422, goalMet: 78   },
+          { date: "Apr 30", dow: "Thu", entered: 11853,  timedOut: 12567, goalMet: 22   },
+        ] },
+    ]
+  },
   {
     weekRange: "Apr 22 – Apr 28, 2026",
     lastUpdated: "Tue Apr 28, 2026",
@@ -219,7 +279,7 @@ const WEEKS_DATA = [
           { date: "Apr 27", dow: "Mon", entered: 23523,  timedOut: 24944, goalMet: 259  },
           { date: "Apr 28", dow: "Tue", entered: 10922,  timedOut: 10689, goalMet: 89   },
         ] },
-      { name: "Food on Trains - Timing Experiment - 1",       logic: "Running status check → serviceable Zoop/Swiggy station", id: 459, entered: 0,      timedOut: 401881, goalMet: 718, controlConvPct: 0.50, daily: [
+      { name: "Food on Trains - Timing Experiment - 1",       logic: "Running status check → serviceable Zoop/Swiggy station", id: 459, entered: 0,      timedOut: 401881, goalMet: 718,  controlConvPct: 0.50, daily: [
           { date: "Apr 22", dow: "Wed", entered: 0,      timedOut: 99824,  goalMet: 549  },
           { date: "Apr 23", dow: "Thu", entered: 0,      timedOut: 97538,  goalMet: 116  },
           { date: "Apr 24", dow: "Fri", entered: 0,      timedOut: 105149, goalMet: 53   },
@@ -428,7 +488,7 @@ function renderWeeklyRows(tbodyId, rows, prefix) {
     const key  = `${prefix}_${r.id}`;
     return `<tr class="journey-row">
       <td>
-        <span class="expand-btn" onclick="toggleDaily(this,'${key}')">&#9654;</span>
+        <span class="expand-btn" onclick="toggleDaily(this,'${key}')">▶</span>
         <span class="jinfo">
           <div class="jname">${r.name}</div>
           <div class="jlogic">${r.logic}</div>
