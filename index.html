@@ -2,7 +2,7 @@
 {
   "name": "Food Journey Weekly Tracker",
   "schemaVersion": 1,
-  "description": "Weekly tracker for all Food on Trains journeys across Ixigo Trains and ConfirmTkt, populated every Monday by a scheduled task from CleverTap Journey Stats."
+  "description": "Weekly tracker for all Food on Trains journeys across Ixigo Trains and ConfirmTkt, updated daily from CleverTap Journey Stats."
 }
 </script>
 <html lang="en">
@@ -72,6 +72,10 @@
   .empty-state { padding: 32px 20px; text-align: center; color: #adb5bd; font-size: 13px; }
   .empty-state p { margin-top: 6px; font-size: 11px; }
 
+  .loading { padding: 60px 20px; text-align: center; color: #adb5bd; font-size: 14px; }
+  .loading-spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid #dee2e6; border-top-color: #0055a5; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   .footer { text-align: center; font-size: 11px; color: #ced4da; margin-top: 16px; }
   .dot { width:7px;height:7px;border-radius:50%;display:inline-block;background:#22c55e;margin-right:4px;animation:pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
@@ -104,36 +108,8 @@
     <span class="updated-pill">Updated: <strong id="updatedLabel">—</strong></span>
   </div>
 
-  <div class="brand-section">
-    <div class="brand-header ixigo">🚂 Ixigo Trains App &nbsp;<span style="font-size:11px;font-weight:400;color:#5b9bd5;">447-577-Z44Z</span></div>
-    <table>
-      <thead><tr>
-        <th style="width:31%">Journey</th>
-        <th class="r">Entered</th>
-        <th class="r">Timed Out</th>
-        <th class="r">Timeout %</th>
-        <th class="r">Goal Met</th>
-        <th class="r">Conv. %</th>
-        <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
-      </tr></thead>
-      <tbody id="ixigoBody"></tbody>
-    </table>
-  </div>
-
-  <div class="brand-section">
-    <div class="brand-header ctkt">🎫 ConfirmTkt App &nbsp;<span style="font-size:11px;font-weight:400;color:#d4845a;">R74-58Z-8Z7Z</span></div>
-    <table>
-      <thead><tr>
-        <th style="width:31%">Journey</th>
-        <th class="r">Entered</th>
-        <th class="r">Timed Out</th>
-        <th class="r">Timeout %</th>
-        <th class="r">Goal Met</th>
-        <th class="r">Conv. %</th>
-        <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
-      </tr></thead>
-      <tbody id="ctktBody"></tbody>
-    </table>
+  <div id="weeklyContent">
+    <div class="loading"><span class="loading-spinner"></span>Loading latest data…</div>
   </div>
 </div>
 
@@ -151,277 +127,16 @@
     <span class="updated-pill" id="dailyUpdatedPill"></span>
   </div>
 
-  <div class="brand-section">
-    <div class="brand-header ixigo">🚂 Ixigo Trains App &nbsp;<span style="font-size:11px;font-weight:400;color:#5b9bd5;">447-577-Z44Z</span></div>
-    <table>
-      <thead><tr>
-        <th style="width:31%">Journey</th>
-        <th class="r">Entered</th>
-        <th class="r">Timed Out</th>
-        <th class="r">Timeout %</th>
-        <th class="r">Goal Met</th>
-        <th class="r">Conv. %</th>
-        <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
-      </tr></thead>
-      <tbody id="dailyIxigoBody"></tbody>
-    </table>
-  </div>
-
-  <div class="brand-section">
-    <div class="brand-header ctkt">🎫 ConfirmTkt App &nbsp;<span style="font-size:11px;font-weight:400;color:#d4845a;">R74-58Z-8Z7Z</span></div>
-    <table>
-      <thead><tr>
-        <th style="width:31%">Journey</th>
-        <th class="r">Entered</th>
-        <th class="r">Timed Out</th>
-        <th class="r">Timeout %</th>
-        <th class="r">Goal Met</th>
-        <th class="r">Conv. %</th>
-        <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
-      </tr></thead>
-      <tbody id="dailyCtktBody"></tbody>
-    </table>
+  <div id="dailyContent">
+    <div class="loading"><span class="loading-spinner"></span>Loading latest data…</div>
   </div>
 </div>
 
-<div class="footer"><span class="dot"></span>Weekly update Wed 3 PM · Daily update 9 AM · Source: CleverTap Journey Stats</div>
+<div class="footer"><span class="dot"></span>Daily update 9 AM · Source: CleverTap Journey Stats · <a href="https://kunalsharma-collab.github.io/food-on-trains/data.json" style="color:#ced4da" target="_blank">data.json</a></div>
 
 <script>
-const WEEKS_DATA = [
-  {
-    weekRange: "Apr 29 – May 5, 2026",
-    lastUpdated: "Thu Apr 30, 2026",
-    ixigo: [
-      { name: "Train - Food Journey",                         logic: "PNs proportional to days left for DOJ",                  id: 427, entered: 12469,  timedOut: 18604,  goalMet: 274,  controlConvPct: 2.08, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 8965,   timedOut: 12868, goalMet: 199  },
-          { date: "Apr 30", dow: "Thu", entered: 3504,   timedOut: 5736,  goalMet: 75   },
-        ] },
-      { name: "Food Ordering Dropoff - V2",                   logic: "Order page viewed but food not clicked",                 id: 461, entered: 35729,  timedOut: 0,      goalMet: 1220, controlConvPct: 2.45, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 25168,  timedOut: 0,     goalMet: 888  },
-          { date: "Apr 30", dow: "Thu", entered: 10561,  timedOut: 0,     goalMet: 332  },
-        ] },
-      { name: "Food Order before DOJ v2",                     logic: "Users with a train in the next 1 day",                   id: 460, entered: 36842,  timedOut: 34967,  goalMet: 324,  controlConvPct: 1.02, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 25168,  timedOut: 24514, goalMet: 231  },
-          { date: "Apr 30", dow: "Thu", entered: 11674,  timedOut: 10453, goalMet: 93   },
-        ] },
-      { name: "Food on Trains - Timing Experiment - 1",       logic: "Running status check → serviceable Zoop/Swiggy station", id: 459, entered: 0,      timedOut: 0,      goalMet: 0,    controlConvPct: 0.50, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 0,      timedOut: 0,     goalMet: 0    },
-          { date: "Apr 30", dow: "Thu", entered: 0,      timedOut: 0,     goalMet: 0    },
-        ] },
-      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 410, entered: 55162,  timedOut: 5,      goalMet: null, controlConvPct: null, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 38738,  timedOut: 5,     goalMet: null },
-          { date: "Apr 30", dow: "Thu", entered: 16424,  timedOut: 0,     goalMet: null },
-        ] },
-      { name: "Running Status Checked but not Order Food v3", logic: "Checked running status, yet to order food",              id: 327, entered: 5546,   timedOut: 5959,   goalMet: 49,   controlConvPct: 0.78, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 3725,   timedOut: 4072,  goalMet: 42   },
-          { date: "Apr 30", dow: "Thu", entered: 1821,   timedOut: 1887,  goalMet: 7    },
-        ] },
-      { name: "PNR Checked but not Order Food v2",            logic: "PNR status check, didn't order food next day",           id: 326, entered: 3101,   timedOut: 3698,   goalMet: 3,    controlConvPct: 0.27, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 2004,   timedOut: 2465,  goalMet: 1    },
-          { date: "Apr 30", dow: "Thu", entered: 1097,   timedOut: 1233,  goalMet: 2    },
-        ] },
-    ],
-    confirmtkt: [
-      { name: "Food Journey - Timing Experiment",             logic: "Running status check → serviceable Zoop/Swiggy station", id: 249, entered: 0,      timedOut: 0,      goalMet: 0,    controlConvPct: 1.37, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 0,      timedOut: 0,     goalMet: 0    },
-          { date: "Apr 30", dow: "Thu", entered: 0,      timedOut: 0,     goalMet: 0    },
-        ] },
-      { name: "Food Journey - Trains",                        logic: "PNs proportional to days left for DOJ",                  id: 246, entered: 24195,  timedOut: 35874,  goalMet: 430,  controlConvPct: 1.78, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 17212,  timedOut: 24818, goalMet: 324  },
-          { date: "Apr 30", dow: "Thu", entered: 6983,   timedOut: 11056, goalMet: 106  },
-        ] },
-      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 219, entered: 24354,  timedOut: 0,      goalMet: null, controlConvPct: null, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 17269,  timedOut: 0,     goalMet: null },
-          { date: "Apr 30", dow: "Thu", entered: 7085,   timedOut: 0,     goalMet: null },
-        ] },
-      { name: "Running status Checked But No order food v3",  logic: "Checked running status, didn't order food",              id: 179, entered: 920,    timedOut: 979,    goalMet: 9,    controlConvPct: 1.25, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 617,    timedOut: 656,   goalMet: 5    },
-          { date: "Apr 30", dow: "Thu", entered: 303,    timedOut: 323,   goalMet: 4    },
-        ] },
-      { name: "Food Ordering Dropoff - V1",                   logic: "Order page viewed but food not clicked",                 id: 115, entered: 18280,  timedOut: 19340,  goalMet: 1060, controlConvPct: 3.48, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 12823,  timedOut: 13885, goalMet: 756  },
-          { date: "Apr 30", dow: "Thu", entered: 5457,   timedOut: 5455,  goalMet: 304  },
-        ] },
-      { name: "Post Train Book Food Order | 29 Apr 2025",     logic: "User has booked a train but not food",                   id: 137, entered: 41460,  timedOut: 41989,  goalMet: 100,  controlConvPct: 0.09, daily: [
-          { date: "Apr 29", dow: "Wed", entered: 29607,  timedOut: 29422, goalMet: 78   },
-          { date: "Apr 30", dow: "Thu", entered: 11853,  timedOut: 12567, goalMet: 22   },
-        ] },
-    ]
-  },
-  {
-    weekRange: "Apr 22 – Apr 28, 2026",
-    lastUpdated: "Tue Apr 28, 2026",
-    ixigo: [
-      { name: "Train - Food Journey",                         logic: "PNs proportional to days left for DOJ",                  id: 427, entered: 63238,  timedOut: 95244,  goalMet: 1403, controlConvPct: 2.08, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 10336,  timedOut: 16397, goalMet: 251  },
-          { date: "Apr 23", dow: "Thu", entered: 10239,  timedOut: 16134, goalMet: 234  },
-          { date: "Apr 24", dow: "Fri", entered: 9551,   timedOut: 15334, goalMet: 202  },
-          { date: "Apr 25", dow: "Sat", entered: 9874,   timedOut: 15009, goalMet: 241  },
-          { date: "Apr 26", dow: "Sun", entered: 9928,   timedOut: 13681, goalMet: 196  },
-          { date: "Apr 27", dow: "Mon", entered: 9580,   timedOut: 12959, goalMet: 202  },
-          { date: "Apr 28", dow: "Tue", entered: 3730,   timedOut: 5730,  goalMet: 77   },
-        ] },
-      { name: "Food Ordering Dropoff - V2",                   logic: "Order page viewed but food not clicked",                 id: 461, entered: 176053, timedOut: 0,      goalMet: 5846, controlConvPct: 2.45, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 27865,  timedOut: 0,     goalMet: 912  },
-          { date: "Apr 23", dow: "Thu", entered: 26750,  timedOut: 0,     goalMet: 837  },
-          { date: "Apr 24", dow: "Fri", entered: 27479,  timedOut: 0,     goalMet: 861  },
-          { date: "Apr 25", dow: "Sat", entered: 26922,  timedOut: 0,     goalMet: 924  },
-          { date: "Apr 26", dow: "Sun", entered: 27895,  timedOut: 0,     goalMet: 942  },
-          { date: "Apr 27", dow: "Mon", entered: 27224,  timedOut: 0,     goalMet: 981  },
-          { date: "Apr 28", dow: "Tue", entered: 11918,  timedOut: 0,     goalMet: 389  },
-        ] },
-      { name: "Food Order before DOJ v2",                     logic: "Users with a train in the next 1 day",                   id: 460, entered: 158221, timedOut: 153154, goalMet: 1702, controlConvPct: 1.02, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 23844,  timedOut: 24251, goalMet: 268  },
-          { date: "Apr 23", dow: "Thu", entered: 25218,  timedOut: 22237, goalMet: 264  },
-          { date: "Apr 24", dow: "Fri", entered: 25526,  timedOut: 23362, goalMet: 250  },
-          { date: "Apr 25", dow: "Sat", entered: 24174,  timedOut: 23080, goalMet: 302  },
-          { date: "Apr 26", dow: "Sun", entered: 25014,  timedOut: 24591, goalMet: 270  },
-          { date: "Apr 27", dow: "Mon", entered: 23523,  timedOut: 24944, goalMet: 259  },
-          { date: "Apr 28", dow: "Tue", entered: 10922,  timedOut: 10689, goalMet: 89   },
-        ] },
-      { name: "Food on Trains - Timing Experiment - 1",       logic: "Running status check → serviceable Zoop/Swiggy station", id: 459, entered: 0,      timedOut: 401881, goalMet: 718,  controlConvPct: 0.50, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 0,      timedOut: 99824,  goalMet: 549  },
-          { date: "Apr 23", dow: "Thu", entered: 0,      timedOut: 97538,  goalMet: 116  },
-          { date: "Apr 24", dow: "Fri", entered: 0,      timedOut: 105149, goalMet: 53   },
-          { date: "Apr 25", dow: "Sat", entered: 0,      timedOut: 99349,  goalMet: 0    },
-          { date: "Apr 26", dow: "Sun", entered: 0,      timedOut: 17,     goalMet: 0    },
-          { date: "Apr 27", dow: "Mon", entered: 0,      timedOut: 3,      goalMet: 0    },
-          { date: "Apr 28", dow: "Tue", entered: 0,      timedOut: 1,      goalMet: 0    },
-        ] },
-      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 410, entered: 273488, timedOut: 14,     goalMet: null, controlConvPct: null, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 41542,  timedOut: 2,     goalMet: null },
-          { date: "Apr 23", dow: "Thu", entered: 40785,  timedOut: 7,     goalMet: null },
-          { date: "Apr 24", dow: "Fri", entered: 41806,  timedOut: 1,     goalMet: null },
-          { date: "Apr 25", dow: "Sat", entered: 42774,  timedOut: 1,     goalMet: null },
-          { date: "Apr 26", dow: "Sun", entered: 44528,  timedOut: 2,     goalMet: null },
-          { date: "Apr 27", dow: "Mon", entered: 43218,  timedOut: 0,     goalMet: null },
-          { date: "Apr 28", dow: "Tue", entered: 18835,  timedOut: 1,     goalMet: null },
-        ] },
-      { name: "Running Status Checked but not Order Food v3", logic: "Checked running status, yet to order food",              id: 327, entered: 26698,  timedOut: 25859,  goalMet: 204,  controlConvPct: 0.78, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 4101,   timedOut: 3578,  goalMet: 31   },
-          { date: "Apr 23", dow: "Thu", entered: 3999,   timedOut: 3759,  goalMet: 32   },
-          { date: "Apr 24", dow: "Fri", entered: 4079,   timedOut: 3846,  goalMet: 33   },
-          { date: "Apr 25", dow: "Sat", entered: 4101,   timedOut: 4046,  goalMet: 28   },
-          { date: "Apr 26", dow: "Sun", entered: 4201,   timedOut: 4292,  goalMet: 36   },
-          { date: "Apr 27", dow: "Mon", entered: 4248,   timedOut: 4257,  goalMet: 31   },
-          { date: "Apr 28", dow: "Tue", entered: 1969,   timedOut: 2081,  goalMet: 13   },
-        ] },
-      { name: "PNR Checked but not Order Food v2",            logic: "PNR status check, didn't order food next day",           id: 326, entered: 14456,  timedOut: 15211,  goalMet: 26,   controlConvPct: 0.27, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 2492,   timedOut: 2375,  goalMet: 5    },
-          { date: "Apr 23", dow: "Thu", entered: 2395,   timedOut: 2219,  goalMet: 3    },
-          { date: "Apr 24", dow: "Fri", entered: 2209,   timedOut: 2167,  goalMet: 3    },
-          { date: "Apr 25", dow: "Sat", entered: 2225,   timedOut: 2482,  goalMet: 8    },
-          { date: "Apr 26", dow: "Sun", entered: 1988,   timedOut: 2338,  goalMet: 5    },
-          { date: "Apr 27", dow: "Mon", entered: 2015,   timedOut: 2267,  goalMet: 2    },
-          { date: "Apr 28", dow: "Tue", entered: 1132,   timedOut: 1363,  goalMet: 0    },
-        ] },
-    ],
-    confirmtkt: [
-      { name: "Food Journey - Timing Experiment",             logic: "Running status check → serviceable Zoop/Swiggy station", id: 249, entered: 0,      timedOut: 412,    goalMet: 7,    controlConvPct: 1.37, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 0,      timedOut: 66,    goalMet: 2    },
-          { date: "Apr 23", dow: "Thu", entered: 0,      timedOut: 75,    goalMet: 2    },
-          { date: "Apr 24", dow: "Fri", entered: 0,      timedOut: 79,    goalMet: 2    },
-          { date: "Apr 25", dow: "Sat", entered: 0,      timedOut: 93,    goalMet: 1    },
-          { date: "Apr 26", dow: "Sun", entered: 0,      timedOut: 99,    goalMet: 0    },
-          { date: "Apr 27", dow: "Mon", entered: 0,      timedOut: 0,     goalMet: 0    },
-          { date: "Apr 28", dow: "Tue", entered: 0,      timedOut: 0,     goalMet: 0    },
-        ] },
-      { name: "Food Journey - Trains",                        logic: "PNs proportional to days left for DOJ",                  id: 246, entered: 122690, timedOut: 179804, goalMet: 2213, controlConvPct: 1.78, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 20219,  timedOut: 31800, goalMet: 355  },
-          { date: "Apr 23", dow: "Thu", entered: 20071,  timedOut: 27718, goalMet: 350  },
-          { date: "Apr 24", dow: "Fri", entered: 18891,  timedOut: 29444, goalMet: 342  },
-          { date: "Apr 25", dow: "Sat", entered: 18765,  timedOut: 29086, goalMet: 326  },
-          { date: "Apr 26", dow: "Sun", entered: 18738,  timedOut: 26387, goalMet: 395  },
-          { date: "Apr 27", dow: "Mon", entered: 18451,  timedOut: 25068, goalMet: 331  },
-          { date: "Apr 28", dow: "Tue", entered: 7555,   timedOut: 10301, goalMet: 114  },
-        ] },
-      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 219, entered: 118678, timedOut: 10,     goalMet: null, controlConvPct: null, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 17795,  timedOut: 1,     goalMet: null },
-          { date: "Apr 23", dow: "Thu", entered: 17920,  timedOut: 0,     goalMet: null },
-          { date: "Apr 24", dow: "Fri", entered: 18241,  timedOut: 8,     goalMet: null },
-          { date: "Apr 25", dow: "Sat", entered: 18755,  timedOut: 0,     goalMet: null },
-          { date: "Apr 26", dow: "Sun", entered: 19333,  timedOut: 0,     goalMet: null },
-          { date: "Apr 27", dow: "Mon", entered: 18735,  timedOut: 1,     goalMet: null },
-          { date: "Apr 28", dow: "Tue", entered: 7899,   timedOut: 0,     goalMet: null },
-        ] },
-      { name: "Running status Checked But No order food v3",  logic: "Checked running status, didn't order food",              id: 179, entered: 4331,   timedOut: 4109,   goalMet: 59,   controlConvPct: 1.25, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 664,    timedOut: 587,   goalMet: 6    },
-          { date: "Apr 23", dow: "Thu", entered: 630,    timedOut: 552,   goalMet: 12   },
-          { date: "Apr 24", dow: "Fri", entered: 659,    timedOut: 603,   goalMet: 5    },
-          { date: "Apr 25", dow: "Sat", entered: 689,    timedOut: 639,   goalMet: 11   },
-          { date: "Apr 26", dow: "Sun", entered: 700,    timedOut: 712,   goalMet: 7    },
-          { date: "Apr 27", dow: "Mon", entered: 672,    timedOut: 667,   goalMet: 14   },
-          { date: "Apr 28", dow: "Tue", entered: 317,    timedOut: 349,   goalMet: 4    },
-        ] },
-      { name: "Food Ordering Dropoff - V1",                   logic: "Order page viewed but food not clicked",                 id: 115, entered: 86939,  timedOut: 89251,  goalMet: 4813, controlConvPct: 3.48, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 13065,  timedOut: 14998, goalMet: 707  },
-          { date: "Apr 23", dow: "Thu", entered: 13366,  timedOut: 13965, goalMet: 702  },
-          { date: "Apr 24", dow: "Fri", entered: 13580,  timedOut: 14157, goalMet: 658  },
-          { date: "Apr 25", dow: "Sat", entered: 13267,  timedOut: 13966, goalMet: 773  },
-          { date: "Apr 26", dow: "Sun", entered: 13731,  timedOut: 13545, goalMet: 819  },
-          { date: "Apr 27", dow: "Mon", entered: 13647,  timedOut: 13004, goalMet: 817  },
-          { date: "Apr 28", dow: "Tue", entered: 6283,   timedOut: 5616,  goalMet: 337  },
-        ] },
-      { name: "Post Train Book Food Order | 29 Apr 2025",     logic: "User has booked a train but not food",                   id: 137, entered: 195425, timedOut: 197675, goalMet: 481,  controlConvPct: 0.09, daily: [
-          { date: "Apr 22", dow: "Wed", entered: 31567,  timedOut: 30939, goalMet: 87   },
-          { date: "Apr 23", dow: "Thu", entered: 31417,  timedOut: 30813, goalMet: 84   },
-          { date: "Apr 24", dow: "Fri", entered: 29811,  timedOut: 31649, goalMet: 63   },
-          { date: "Apr 25", dow: "Sat", entered: 30315,  timedOut: 31267, goalMet: 78   },
-          { date: "Apr 26", dow: "Sun", entered: 29749,  timedOut: 30027, goalMet: 75   },
-          { date: "Apr 27", dow: "Mon", entered: 29570,  timedOut: 30068, goalMet: 78   },
-          { date: "Apr 28", dow: "Tue", entered: 12996,  timedOut: 12912, goalMet: 16   },
-        ] },
-    ]
-  },
-  {
-    weekRange: "Apr 15 – Apr 21, 2026",
-    lastUpdated: "Tue Apr 28, 2026",
-    ixigo: [
-      { name: "Train - Food Journey",                         logic: "PNs proportional to days left for DOJ",                  id: 427, entered: 76124,  timedOut: 123258, goalMet: 1638, controlConvPct: 2.08, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 11117,  timedOut: 16246, goalMet: 212  },
-        ] },
-      { name: "Food Ordering Dropoff - V2",                   logic: "Order page viewed but food not clicked",                 id: 461, entered: 192677, timedOut: 0,      goalMet: 5412, controlConvPct: 2.45, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 29842,  timedOut: 0,     goalMet: 868  },
-        ] },
-      { name: "Food Order before DOJ v2",                     logic: "Users with a train in the next 1 day",                   id: 460, entered: 166961, timedOut: 160914, goalMet: 1736, controlConvPct: 1.02, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 23953,  timedOut: 23913, goalMet: 244  },
-        ] },
-      { name: "Food on Trains - Timing Experiment - 1",       logic: "Running status check → serviceable Zoop/Swiggy station", id: 459, entered: 692593, timedOut: 656053, goalMet: 3348, controlConvPct: 0.50, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 99902,  timedOut: 98480,  goalMet: 532  },
-        ] },
-      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 410, entered: 296374, timedOut: 15,     goalMet: null, controlConvPct: null, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 42811,  timedOut: 1,     goalMet: null },
-        ] },
-      { name: "Running Status Checked but not Order Food v3", logic: "Checked running status, yet to order food",              id: 327, entered: 28227,  timedOut: 23561,  goalMet: 171,  controlConvPct: 0.78, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 4238,   timedOut: 3596,  goalMet: 36   },
-        ] },
-      { name: "PNR Checked but not Order Food v2",            logic: "PNR status check, didn't order food next day",           id: 326, entered: 16440,  timedOut: 16328,  goalMet: 32,   controlConvPct: 0.27, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 2485,   timedOut: 2425,  goalMet: 7    },
-        ] },
-    ],
-    confirmtkt: [
-      { name: "Food Journey - Timing Experiment",             logic: "Running status check → serviceable Zoop/Swiggy station", id: 249, entered: 583,    timedOut: 553,    goalMet: 0,    controlConvPct: 1.37, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 102,    timedOut: 83,    goalMet: 0    },
-        ] },
-      { name: "Food Journey - Trains",                        logic: "PNs proportional to days left for DOJ",                  id: 246, entered: 144216, timedOut: 251786, goalMet: 2634, controlConvPct: 1.78, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 21191,  timedOut: 32037, goalMet: 353  },
-        ] },
-      { name: "Food Survey - Jan'26",                         logic: "Users who enter funnel but decide not to book",           id: 219, entered: 124648, timedOut: 3,      goalMet: null, controlConvPct: null, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 17849,  timedOut: 2,     goalMet: null },
-        ] },
-      { name: "Running status Checked But No order food v3",  logic: "Checked running status, didn't order food",              id: 179, entered: 4495,   timedOut: 3898,   goalMet: 50,   controlConvPct: 1.25, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 679,    timedOut: 563,   goalMet: 8    },
-        ] },
-      { name: "Food Ordering Dropoff - V1",                   logic: "Order page viewed but food not clicked",                 id: 115, entered: 100496, timedOut: 108208, goalMet: 4930, controlConvPct: 3.48, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 13503,  timedOut: 18848, goalMet: 754  },
-        ] },
-      { name: "Post Train Book Food Order | 29 Apr 2025",     logic: "User has booked a train but not food",                   id: 137, entered: 216283, timedOut: 217640, goalMet: 504,  controlConvPct: 0.09, daily: [
-          { date: "Apr 21", dow: "Tue", entered: 30867,  timedOut: 31645, goalMet: 72   },
-        ] },
-    ]
-  }
-];
-
+const DATA_URL = 'https://kunalsharma-collab.github.io/food-on-trains/data.json';
+let WEEKS_DATA = [];
 let currentWeekIdx = 0;
 let currentDayIdx  = 0;
 let currentView    = 'weekly';
@@ -455,6 +170,27 @@ function incrCell(v) {
   return `<td class="num ${cls}">${sign}${v.toLocaleString()}</td>`;
 }
 
+function tableShell(tbodyId) {
+  return `<div class="brand-section">
+    <div class="brand-header ixigo">🚂 Ixigo Trains App &nbsp;<span style="font-size:11px;font-weight:400;color:#5b9bd5;">447-577-Z44Z</span></div>
+    <table><thead><tr>
+      <th style="width:31%">Journey</th>
+      <th class="r">Entered</th><th class="r">Timed Out</th><th class="r">Timeout %</th>
+      <th class="r">Goal Met</th><th class="r">Conv. %</th>
+      <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
+    </tr></thead><tbody id="${tbodyId}_ix"></tbody></table>
+  </div>
+  <div class="brand-section">
+    <div class="brand-header ctkt">🎫 ConfirmTkt App &nbsp;<span style="font-size:11px;font-weight:400;color:#d4845a;">R74-58Z-8Z7Z</span></div>
+    <table><thead><tr>
+      <th style="width:31%">Journey</th>
+      <th class="r">Entered</th><th class="r">Timed Out</th><th class="r">Timeout %</th>
+      <th class="r">Goal Met</th><th class="r">Conv. %</th>
+      <th class="r"><span class="tip" data-tip="(Journey Conv% − Control Conv%) × Entered">Incr. Bookings</span></th>
+    </tr></thead><tbody id="${tbodyId}_ct"></tbody></table>
+  </div>`;
+}
+
 function toggleDaily(btn, key) {
   const open = btn.classList.toggle('open');
   document.querySelectorAll(`.d-${key}`).forEach(r => r.style.display = open ? 'table-row' : 'none');
@@ -463,7 +199,7 @@ function toggleDaily(btn, key) {
 function buildDailyRows(r, key) {
   if (!r.daily || r.daily.length === 0) {
     return `<tr class="daily-row d-${key}" style="display:none">
-      <td colspan="7" class="daily-date" style="color:#ced4da;font-size:11px;font-style:italic;">Daily data collected at 9 AM each day — check back tomorrow</td>
+      <td colspan="7" class="daily-date" style="color:#ced4da;font-size:11px;font-style:italic;">Daily data collected at 9 AM each day</td>
     </tr>`;
   }
   return r.daily.map(d => {
@@ -482,7 +218,9 @@ function buildDailyRows(r, key) {
 }
 
 function renderWeeklyRows(tbodyId, rows, prefix) {
-  document.getElementById(tbodyId).innerHTML = rows.map(r => {
+  const el = document.getElementById(tbodyId);
+  if (!el) return;
+  el.innerHTML = rows.map(r => {
     const tc   = toCls(r.timedOut, r.entered);
     const incr = calcIncr(r.goalMet, r.entered, r.controlConvPct);
     const key  = `${prefix}_${r.id}`;
@@ -510,19 +248,16 @@ function renderWeek(idx) {
   document.getElementById('weekPicker').value = idx;
   document.getElementById('prevWeekBtn').disabled = idx >= WEEKS_DATA.length - 1;
   document.getElementById('nextWeekBtn').disabled = idx <= 0;
-  renderWeeklyRows('ixigoBody',  w.ixigo,      'ix');
-  renderWeeklyRows('ctktBody',   w.confirmtkt, 'ct');
+  renderWeeklyRows('weekly_ix', w.ixigo, 'ix');
+  renderWeeklyRows('weekly_ct', w.confirmtkt, 'ct');
   currentWeekIdx = idx;
 }
 
 function buildWeekPicker() {
   const sel = document.getElementById('weekPicker');
   sel.innerHTML = WEEKS_DATA.map((w,i) => `<option value="${i}">${w.weekRange}</option>`).join('');
-  sel.addEventListener('change', e => renderWeek(+e.target.value));
+  sel.onchange = e => renderWeek(+e.target.value);
 }
-
-document.getElementById('prevWeekBtn').addEventListener('click', () => { if (currentWeekIdx < WEEKS_DATA.length-1) renderWeek(currentWeekIdx+1); });
-document.getElementById('nextWeekBtn').addEventListener('click', () => { if (currentWeekIdx > 0) renderWeek(currentWeekIdx-1); });
 
 function buildAllDates() {
   const seen = new Set();
@@ -543,8 +278,9 @@ function buildAllDates() {
 
 function renderDailyRows(tbodyId, rows, date) {
   const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
   if (!date) {
-    tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No daily data available yet.<p>Daily numbers are collected at 9 AM each day — check back tomorrow.</p></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No daily data available yet.</td></tr>`;
     return;
   }
   tbody.innerHTML = rows.map(r => {
@@ -576,8 +312,6 @@ function renderDay(idx) {
     document.getElementById('prevDayBtn').disabled = true;
     document.getElementById('nextDayBtn').disabled = true;
     document.getElementById('dailyUpdatedPill').textContent = '';
-    renderDailyRows('dailyIxigoBody',  [], null);
-    renderDailyRows('dailyCtktBody',   [], null);
     return;
   }
   const entry = allDates[idx];
@@ -587,8 +321,8 @@ function renderDay(idx) {
   document.getElementById('nextDayBtn').disabled = idx <= 0;
   document.getElementById('dailyUpdatedPill').textContent = dateLabel;
   const w = WEEKS_DATA[entry.weekIdx];
-  renderDailyRows('dailyIxigoBody',  w.ixigo,      entry.date);
-  renderDailyRows('dailyCtktBody',   w.confirmtkt, entry.date);
+  renderDailyRows('daily_ix', w.ixigo, entry.date);
+  renderDailyRows('daily_ct', w.confirmtkt, entry.date);
   currentDayIdx = idx;
 }
 
@@ -599,10 +333,12 @@ function buildDayPicker() {
     sel.innerHTML = '<option>No daily data yet</option>';
   } else {
     sel.innerHTML = allDates.map((d, i) => `<option value="${i}">${d.date}${d.dow ? ' (' + d.dow + ')' : ''}</option>`).join('');
-    sel.addEventListener('change', e => renderDay(+e.target.value));
+    sel.onchange = e => renderDay(+e.target.value);
   }
 }
 
+document.getElementById('prevWeekBtn').addEventListener('click', () => { if (currentWeekIdx < WEEKS_DATA.length-1) renderWeek(currentWeekIdx+1); });
+document.getElementById('nextWeekBtn').addEventListener('click', () => { if (currentWeekIdx > 0) renderWeek(currentWeekIdx-1); });
 document.getElementById('prevDayBtn').addEventListener('click', () => { if (currentDayIdx < allDates.length-1) renderDay(currentDayIdx+1); });
 document.getElementById('nextDayBtn').addEventListener('click', () => { if (currentDayIdx > 0) renderDay(currentDayIdx-1); });
 
@@ -615,9 +351,27 @@ function switchView(view) {
   if (view === 'daily') renderDay(currentDayIdx);
 }
 
-buildWeekPicker();
-buildDayPicker();
-renderWeek(0);
+async function loadData() {
+  try {
+    const res = await fetch(DATA_URL + '?t=' + Date.now());
+    const json = await res.json();
+    WEEKS_DATA = json.weeks;
+
+    // Inject table shells
+    document.getElementById('weeklyContent').innerHTML = tableShell('weekly');
+    document.getElementById('dailyContent').innerHTML  = tableShell('daily');
+
+    buildWeekPicker();
+    buildDayPicker();
+    renderWeek(0);
+    if (currentView === 'daily') renderDay(0);
+  } catch(e) {
+    document.getElementById('weeklyContent').innerHTML = `<div class="loading" style="color:#dc3545">⚠️ Failed to load data. Please reload.<br><small>${e.message}</small></div>`;
+    document.getElementById('dailyContent').innerHTML  = `<div class="loading" style="color:#dc3545">⚠️ Failed to load data.</div>`;
+  }
+}
+
+loadData();
 </script>
 </body>
 </html>
