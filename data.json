@@ -1,9 +1,9 @@
 {
-  "lastUpdated": "Thu Apr 30, 2026",
+  "lastUpdated": "Fri May 1, 2026",
   "weeks": [
     {
       "weekRange": "Apr 29 \u2013 May 5, 2026",
-      "lastUpdated": "Thu Apr 30, 2026",
+      "lastUpdated": "Fri May 1, 2026",
       "ixigo": [
         {
           "name": "Train - Food Journey",
@@ -27,6 +27,13 @@
               "entered": 3504,
               "timedOut": 5736,
               "goalMet": 75
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
+              "goalMet": null
             }
           ]
         },
@@ -52,6 +59,13 @@
               "entered": 10561,
               "timedOut": 0,
               "goalMet": 332
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
+              "goalMet": null
             }
           ]
         },
@@ -77,6 +91,13 @@
               "entered": 11674,
               "timedOut": 10453,
               "goalMet": 93
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
+              "goalMet": null
             }
           ]
         },
@@ -102,6 +123,13 @@
               "entered": 0,
               "timedOut": 0,
               "goalMet": 0
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
+              "goalMet": null
             }
           ]
         },
@@ -126,6 +154,13 @@
               "dow": "Thu",
               "entered": 16424,
               "timedOut": 0,
+              "goalMet": null
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
               "goalMet": null
             }
           ]
@@ -152,6 +187,13 @@
               "entered": 1821,
               "timedOut": 1887,
               "goalMet": 7
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
+              "goalMet": null
             }
           ]
         },
@@ -177,6 +219,13 @@
               "entered": 1097,
               "timedOut": 1233,
               "goalMet": 2
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
+              "goalMet": null
             }
           ]
         }
@@ -204,6 +253,13 @@
               "entered": 0,
               "timedOut": 0,
               "goalMet": 0
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
+              "goalMet": null
             }
           ]
         },
@@ -229,6 +285,13 @@
               "entered": 6983,
               "timedOut": 11056,
               "goalMet": 106
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
+              "goalMet": null
             }
           ]
         },
@@ -253,6 +316,13 @@
               "dow": "Thu",
               "entered": 7085,
               "timedOut": 0,
+              "goalMet": null
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
               "goalMet": null
             }
           ]
@@ -279,6 +349,13 @@
               "entered": 303,
               "timedOut": 323,
               "goalMet": 4
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
+              "goalMet": null
             }
           ]
         },
@@ -304,6 +381,13 @@
               "entered": 5457,
               "timedOut": 5455,
               "goalMet": 304
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
+              "goalMet": null
             }
           ]
         },
@@ -329,6 +413,13 @@
               "entered": 11853,
               "timedOut": 12567,
               "goalMet": 22
+            },
+            {
+              "date": "May 1",
+              "dow": "Fri",
+              "entered": null,
+              "timedOut": null,
+              "goalMet": null
             }
           ]
         }
