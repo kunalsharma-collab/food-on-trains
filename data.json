@@ -9,9 +9,9 @@
           "name": "Train - Food Journey",
           "logic": "PNs proportional to days left for DOJ",
           "id": 427,
-          "entered": 175656,
-          "timedOut": 259127,
-          "goalMet": 3800,
+          "entered": 18502,
+          "timedOut": 27601,
+          "goalMet": 395,
           "controlConvPct": 2.08,
           "daily": [
             {
@@ -38,9 +38,9 @@
             {
               "date": "May 4",
               "dow": "Mon",
-              "entered": 163187,
-              "timedOut": 240523,
-              "goalMet": 3526
+              "entered": 6033,
+              "timedOut": 8997,
+              "goalMet": 121
             }
           ]
         },
@@ -50,7 +50,7 @@
           "id": 461,
           "entered": 51957,
           "timedOut": 0,
-          "goalMet": 1790,
+          "goalMet": 1793,
           "controlConvPct": 2.45,
           "daily": [
             {
@@ -79,7 +79,7 @@
               "dow": "Mon",
               "entered": 16228,
               "timedOut": 0,
-              "goalMet": 570
+              "goalMet": 573
             }
           ]
         },
@@ -323,9 +323,9 @@
           "name": "Food Journey - Trains",
           "logic": "PNs proportional to days left for DOJ",
           "id": 246,
-          "entered": 35415,
-          "timedOut": 53043,
-          "goalMet": 616,
+          "entered": 35466,
+          "timedOut": 53117,
+          "goalMet": 617,
           "controlConvPct": 1.78,
           "daily": [
             {
@@ -352,9 +352,9 @@
             {
               "date": "May 4",
               "dow": "Mon",
-              "entered": 11220,
-              "timedOut": 17169,
-              "goalMet": 186
+              "entered": 11271,
+              "timedOut": 17243,
+              "goalMet": 187
             }
           ]
         },
@@ -362,7 +362,7 @@
           "name": "Food Survey - Jan'26",
           "logic": "Users who enter funnel but decide not to book",
           "id": 219,
-          "entered": 34948,
+          "entered": 35023,
           "timedOut": 0,
           "goalMet": null,
           "controlConvPct": null,
@@ -391,7 +391,7 @@
             {
               "date": "May 4",
               "dow": "Mon",
-              "entered": 10594,
+              "entered": 10669,
               "timedOut": 0,
               "goalMet": null
             }
@@ -401,7 +401,7 @@
           "name": "Running status Checked But No order food v3",
           "logic": "Checked running status, didn't order food",
           "id": 179,
-          "entered": 1385,
+          "entered": 1388,
           "timedOut": 1472,
           "goalMet": 16,
           "controlConvPct": 1.25,
@@ -430,7 +430,7 @@
             {
               "date": "May 4",
               "dow": "Mon",
-              "entered": 465,
+              "entered": 468,
               "timedOut": 493,
               "goalMet": 7
             }
@@ -440,9 +440,9 @@
           "name": "Food Ordering Dropoff - V1",
           "logic": "Order page viewed but food not clicked",
           "id": 115,
-          "entered": 26179,
-          "timedOut": 27052,
-          "goalMet": 1582,
+          "entered": 26192,
+          "timedOut": 27084,
+          "goalMet": 1583,
           "controlConvPct": 3.48,
           "daily": [
             {
@@ -469,9 +469,9 @@
             {
               "date": "May 4",
               "dow": "Mon",
-              "entered": 7899,
-              "timedOut": 7712,
-              "goalMet": 522
+              "entered": 7912,
+              "timedOut": 7744,
+              "goalMet": 523
             }
           ]
         },
@@ -479,7 +479,7 @@
           "name": "Post Train Book Food Order | 29 Apr 2025",
           "logic": "User has booked a train but not food",
           "id": 137,
-          "entered": 63264,
+          "entered": 63293,
           "timedOut": 64391,
           "goalMet": 157,
           "controlConvPct": 0.09,
@@ -508,7 +508,7 @@
             {
               "date": "May 4",
               "dow": "Mon",
-              "entered": 21804,
+              "entered": 21833,
               "timedOut": 22402,
               "goalMet": 57
             }
