@@ -1,17 +1,17 @@
 {
-  "lastUpdated": "Mon May 4, 2026",
+  "lastUpdated": "Tue May 5, 2026",
   "weeks": [
     {
       "weekRange": "Apr 29 \u2013 May 5, 2026",
-      "lastUpdated": "Mon May 4, 2026",
+      "lastUpdated": "Tue May 5, 2026",
       "ixigo": [
         {
           "name": "Train - Food Journey",
           "logic": "PNs proportional to days left for DOJ",
           "id": 427,
-          "entered": 18502,
-          "timedOut": 27601,
-          "goalMet": 395,
+          "entered": 1198108,
+          "timedOut": 861453,
+          "goalMet": 19706,
           "controlConvPct": 2.08,
           "daily": [
             {
@@ -41,6 +41,13 @@
               "entered": 6033,
               "timedOut": 8997,
               "goalMet": 121
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 1179606,
+              "timedOut": 833852,
+              "goalMet": 19311
             }
           ]
         },
@@ -48,9 +55,9 @@
           "name": "Food Ordering Dropoff - V2",
           "logic": "Order page viewed but food not clicked",
           "id": 461,
-          "entered": 51957,
+          "entered": 1264110,
           "timedOut": 0,
-          "goalMet": 1793,
+          "goalMet": 35170,
           "controlConvPct": 2.45,
           "daily": [
             {
@@ -80,6 +87,13 @@
               "entered": 16228,
               "timedOut": 0,
               "goalMet": 573
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 1212153,
+              "timedOut": 0,
+              "goalMet": 33377
             }
           ]
         },
@@ -87,9 +101,9 @@
           "name": "Food Order before DOJ v2",
           "logic": "Users with a train in the next 1 day",
           "id": 460,
-          "entered": 53098,
-          "timedOut": 51500,
-          "goalMet": 503,
+          "entered": 62253,
+          "timedOut": 60348,
+          "goalMet": 562,
           "controlConvPct": 1.02,
           "daily": [
             {
@@ -119,6 +133,13 @@
               "entered": 16256,
               "timedOut": 16533,
               "goalMet": 179
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 9155,
+              "timedOut": 8848,
+              "goalMet": 59
             }
           ]
         },
@@ -158,6 +179,13 @@
               "entered": 0,
               "timedOut": 0,
               "goalMet": 0
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 0,
+              "timedOut": 0,
+              "goalMet": 0
             }
           ]
         },
@@ -165,8 +193,8 @@
           "name": "Food Survey - Jan'26",
           "logic": "Users who enter funnel but decide not to book",
           "id": 410,
-          "entered": 80134,
-          "timedOut": 8,
+          "entered": 92392,
+          "timedOut": 9,
           "goalMet": null,
           "controlConvPct": null,
           "daily": [
@@ -197,6 +225,13 @@
               "entered": 24972,
               "timedOut": 3,
               "goalMet": null
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 12258,
+              "timedOut": 1,
+              "goalMet": null
             }
           ]
         },
@@ -204,9 +239,9 @@
           "name": "Running Status Checked but not Order Food v3",
           "logic": "Checked running status, yet to order food",
           "id": 327,
-          "entered": 8301,
-          "timedOut": 9047,
-          "goalMet": 57,
+          "entered": 9775,
+          "timedOut": 10631,
+          "goalMet": 63,
           "controlConvPct": 0.78,
           "daily": [
             {
@@ -236,6 +271,13 @@
               "entered": 2755,
               "timedOut": 3088,
               "goalMet": 8
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 1474,
+              "timedOut": 1584,
+              "goalMet": 6
             }
           ]
         },
@@ -243,8 +285,8 @@
           "name": "PNR Checked but not Order Food v2",
           "logic": "PNR status check, didn't order food next day",
           "id": 326,
-          "entered": 4663,
-          "timedOut": 5177,
+          "entered": 5569,
+          "timedOut": 5969,
           "goalMet": 5,
           "controlConvPct": 0.27,
           "daily": [
@@ -275,6 +317,13 @@
               "entered": 1562,
               "timedOut": 1479,
               "goalMet": 2
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 906,
+              "timedOut": 792,
+              "goalMet": 0
             }
           ]
         }
@@ -316,6 +365,13 @@
               "entered": 0,
               "timedOut": 0,
               "goalMet": 0
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 0,
+              "timedOut": 0,
+              "goalMet": 0
             }
           ]
         },
@@ -323,9 +379,9 @@
           "name": "Food Journey - Trains",
           "logic": "PNs proportional to days left for DOJ",
           "id": 246,
-          "entered": 35466,
-          "timedOut": 53117,
-          "goalMet": 617,
+          "entered": 39915,
+          "timedOut": 57899,
+          "goalMet": 681,
           "controlConvPct": 1.78,
           "daily": [
             {
@@ -355,6 +411,13 @@
               "entered": 11271,
               "timedOut": 17243,
               "goalMet": 187
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 4449,
+              "timedOut": 4782,
+              "goalMet": 64
             }
           ]
         },
@@ -362,7 +425,7 @@
           "name": "Food Survey - Jan'26",
           "logic": "Users who enter funnel but decide not to book",
           "id": 219,
-          "entered": 35023,
+          "entered": 40196,
           "timedOut": 0,
           "goalMet": null,
           "controlConvPct": null,
@@ -394,6 +457,13 @@
               "entered": 10669,
               "timedOut": 0,
               "goalMet": null
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 5173,
+              "timedOut": 0,
+              "goalMet": null
             }
           ]
         },
@@ -401,9 +471,9 @@
           "name": "Running status Checked But No order food v3",
           "logic": "Checked running status, didn't order food",
           "id": 179,
-          "entered": 1388,
-          "timedOut": 1472,
-          "goalMet": 16,
+          "entered": 1623,
+          "timedOut": 1747,
+          "goalMet": 21,
           "controlConvPct": 1.25,
           "daily": [
             {
@@ -433,6 +503,13 @@
               "entered": 468,
               "timedOut": 493,
               "goalMet": 7
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 235,
+              "timedOut": 275,
+              "goalMet": 5
             }
           ]
         },
@@ -440,9 +517,9 @@
           "name": "Food Ordering Dropoff - V1",
           "logic": "Order page viewed but food not clicked",
           "id": 115,
-          "entered": 26192,
-          "timedOut": 27084,
-          "goalMet": 1583,
+          "entered": 29665,
+          "timedOut": 30451,
+          "goalMet": 1772,
           "controlConvPct": 3.48,
           "daily": [
             {
@@ -472,6 +549,13 @@
               "entered": 7912,
               "timedOut": 7744,
               "goalMet": 523
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 3473,
+              "timedOut": 3367,
+              "goalMet": 189
             }
           ]
         },
@@ -479,9 +563,9 @@
           "name": "Post Train Book Food Order | 29 Apr 2025",
           "logic": "User has booked a train but not food",
           "id": 137,
-          "entered": 63293,
-          "timedOut": 64391,
-          "goalMet": 157,
+          "entered": 72269,
+          "timedOut": 72740,
+          "goalMet": 174,
           "controlConvPct": 0.09,
           "daily": [
             {
@@ -511,6 +595,13 @@
               "entered": 21833,
               "timedOut": 22402,
               "goalMet": 57
+            },
+            {
+              "date": "May 5",
+              "dow": "Tue",
+              "entered": 8976,
+              "timedOut": 8349,
+              "goalMet": 17
             }
           ]
         }
