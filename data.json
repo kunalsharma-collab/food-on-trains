@@ -9,9 +9,9 @@
           "name": "Train - Food Journey",
           "logic": "PNs proportional to days left for DOJ",
           "id": 427,
-          "entered": 20941,
-          "timedOut": 31278,
-          "goalMet": 442,
+          "entered": 21019,
+          "timedOut": 31279,
+          "goalMet": 444,
           "controlConvPct": 2.08,
           "daily": [
             {
@@ -45,9 +45,9 @@
             {
               "date": "May 5",
               "dow": "Tue",
-              "entered": 2439,
-              "timedOut": 3677,
-              "goalMet": 47
+              "entered": 2517,
+              "timedOut": 3678,
+              "goalMet": 49
             }
           ]
         },
@@ -55,7 +55,7 @@
           "name": "Food Ordering Dropoff - V2",
           "logic": "Order page viewed but food not clicked",
           "id": 461,
-          "entered": 59661,
+          "entered": 59658,
           "timedOut": 0,
           "goalMet": 2073,
           "controlConvPct": 2.45,
@@ -91,7 +91,7 @@
             {
               "date": "May 5",
               "dow": "Tue",
-              "entered": 7704,
+              "entered": 7701,
               "timedOut": 0,
               "goalMet": 280
             }
@@ -101,8 +101,8 @@
           "name": "Food Order before DOJ v2",
           "logic": "Users with a train in the next 1 day",
           "id": 460,
-          "entered": 62282,
-          "timedOut": 60348,
+          "entered": 62315,
+          "timedOut": 60381,
           "goalMet": 562,
           "controlConvPct": 1.02,
           "daily": [
@@ -137,8 +137,8 @@
             {
               "date": "May 5",
               "dow": "Tue",
-              "entered": 9184,
-              "timedOut": 8848,
+              "entered": 9217,
+              "timedOut": 8881,
               "goalMet": 59
             }
           ]
@@ -381,7 +381,7 @@
           "id": 246,
           "entered": 39915,
           "timedOut": 57899,
-          "goalMet": 681,
+          "goalMet": 683,
           "controlConvPct": 1.78,
           "daily": [
             {
@@ -417,7 +417,7 @@
               "dow": "Tue",
               "entered": 4449,
               "timedOut": 4782,
-              "goalMet": 64
+              "goalMet": 66
             }
           ]
         },
@@ -563,7 +563,7 @@
           "name": "Post Train Book Food Order | 29 Apr 2025",
           "logic": "User has booked a train but not food",
           "id": 137,
-          "entered": 72269,
+          "entered": 72418,
           "timedOut": 72872,
           "goalMet": 174,
           "controlConvPct": 0.09,
@@ -599,7 +599,7 @@
             {
               "date": "May 5",
               "dow": "Tue",
-              "entered": 8976,
+              "entered": 9125,
               "timedOut": 8481,
               "goalMet": 17
             }
