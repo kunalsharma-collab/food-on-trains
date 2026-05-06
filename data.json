@@ -1,6 +1,248 @@
 {
-  "lastUpdated": "Tue May 5, 2026",
+  "lastUpdated": "Wed May 6, 2026",
   "weeks": [
+    {
+      "weekRange": "May 6 \u2013 May 12, 2026",
+      "lastUpdated": "Wed May 6, 2026",
+      "ixigo": [
+        {
+          "name": "Train - Food Journey",
+          "logic": "PNs proportional to days left for DOJ",
+          "id": 427,
+          "entered": 5357,
+          "timedOut": 7148,
+          "goalMet": 106,
+          "controlConvPct": 2.08,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 5357,
+              "timedOut": 7148,
+              "goalMet": 106
+            }
+          ]
+        },
+        {
+          "name": "Food Ordering Dropoff - V2",
+          "logic": "Order page viewed but food not clicked",
+          "id": 461,
+          "entered": 13815,
+          "timedOut": 0,
+          "goalMet": 452,
+          "controlConvPct": 2.45,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 13815,
+              "timedOut": 0,
+              "goalMet": 452
+            }
+          ]
+        },
+        {
+          "name": "Food Order before DOJ v2",
+          "logic": "Users with a train in the next 1 day",
+          "id": 460,
+          "entered": 13006,
+          "timedOut": 13965,
+          "goalMet": 136,
+          "controlConvPct": 1.02,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 13006,
+              "timedOut": 13965,
+              "goalMet": 136
+            }
+          ]
+        },
+        {
+          "name": "Food on Trains - Timing Experiment - 1",
+          "logic": "Running status check \u2192 serviceable Zoop/Swiggy station",
+          "id": 459,
+          "entered": 0,
+          "timedOut": 0,
+          "goalMet": 0,
+          "controlConvPct": 0.5,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 0,
+              "timedOut": 0,
+              "goalMet": 0
+            }
+          ]
+        },
+        {
+          "name": "Food Survey - Jan'26",
+          "logic": "Users who enter funnel but decide not to book",
+          "id": 410,
+          "entered": 20823,
+          "timedOut": 0,
+          "goalMet": null,
+          "controlConvPct": null,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 20823,
+              "timedOut": 0,
+              "goalMet": null
+            }
+          ]
+        },
+        {
+          "name": "Running Status Checked but not Order Food v3",
+          "logic": "Checked running status, yet to order food",
+          "id": 327,
+          "entered": 2391,
+          "timedOut": 2189,
+          "goalMet": 12,
+          "controlConvPct": 0.78,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 2391,
+              "timedOut": 2189,
+              "goalMet": 12
+            }
+          ]
+        },
+        {
+          "name": "PNR Checked but not Order Food v2",
+          "logic": "PNR status check, didn't order food next day",
+          "id": 326,
+          "entered": 1359,
+          "timedOut": 1291,
+          "goalMet": 2,
+          "controlConvPct": 0.27,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 1359,
+              "timedOut": 1291,
+              "goalMet": 2
+            }
+          ]
+        }
+      ],
+      "confirmtkt": [
+        {
+          "name": "Food Journey - Timing Experiment",
+          "logic": "Running status check \u2192 serviceable Zoop/Swiggy station",
+          "id": 249,
+          "entered": 0,
+          "timedOut": 0,
+          "goalMet": 0,
+          "controlConvPct": 1.37,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 0,
+              "timedOut": 0,
+              "goalMet": 0
+            }
+          ]
+        },
+        {
+          "name": "Food Journey - Trains",
+          "logic": "PNs proportional to days left for DOJ",
+          "id": 246,
+          "entered": 9617,
+          "timedOut": 12885,
+          "goalMet": 130,
+          "controlConvPct": 1.78,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 9617,
+              "timedOut": 12885,
+              "goalMet": 130
+            }
+          ]
+        },
+        {
+          "name": "Food Survey - Jan'26",
+          "logic": "Users who enter funnel but decide not to book",
+          "id": 219,
+          "entered": 9162,
+          "timedOut": 0,
+          "goalMet": null,
+          "controlConvPct": null,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 9162,
+              "timedOut": 0,
+              "goalMet": null
+            }
+          ]
+        },
+        {
+          "name": "Running status Checked But No order food v3",
+          "logic": "Checked running status, didn't order food",
+          "id": 179,
+          "entered": 383,
+          "timedOut": 377,
+          "goalMet": 5,
+          "controlConvPct": 1.25,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 383,
+              "timedOut": 377,
+              "goalMet": 5
+            }
+          ]
+        },
+        {
+          "name": "Food Ordering Dropoff - V1",
+          "logic": "Order page viewed but food not clicked",
+          "id": 115,
+          "entered": 6874,
+          "timedOut": 7237,
+          "goalMet": 385,
+          "controlConvPct": 3.48,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 6874,
+              "timedOut": 7237,
+              "goalMet": 385
+            }
+          ]
+        },
+        {
+          "name": "Post Train Book Food Order | 29 Apr 2025",
+          "logic": "User has booked a train but not food",
+          "id": 137,
+          "entered": 17830,
+          "timedOut": 16920,
+          "goalMet": 37,
+          "controlConvPct": 0.09,
+          "daily": [
+            {
+              "date": "May 6",
+              "dow": "Wed",
+              "entered": 17830,
+              "timedOut": 16920,
+              "goalMet": 37
+            }
+          ]
+        }
+      ]
+    },
     {
       "weekRange": "Apr 29 \u2013 May 5, 2026",
       "lastUpdated": "Tue May 5, 2026",
